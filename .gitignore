@@ -1,4 +1,9 @@
-artisan
 .env
+_ide_helper.php
+.phpstorm.meta.php
+artisan
+npm-debug.log
+
 .idea/
+node_modules/
 vendor/
