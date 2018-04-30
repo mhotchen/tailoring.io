@@ -7,20 +7,25 @@ business, such as customer and order management.
 
 ## Requirements for development:
 
-* nodejs 8.11 LTS
-* php 7.2
-* libpng-dev
+* nodejs 8.11 LTS w/ npm
+* php 7.2 w/ composer, dom and mbstring extensions
+* libpng-dev and build-essentials (fucking nodejs libraries man...)
 
 ## Running
 
 ```bash
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
 docker-compose up
 docker-compose up -d # run in background
 ```
 
 ## Development
 
-The following will watch changes to the frontend and automatically compile them:
+The following will watch changes to the frontend and automatically compile them. Make sure both your composer and
+npm dependencies have been installed beforehand:
 
 ```bash
 npm run watch
