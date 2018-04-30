@@ -9,15 +9,15 @@ business, such as customer and order management.
 
 * nodejs 8.11 LTS w/ npm
 * php 7.2 w/ composer, dom and mbstring extensions
-* libpng-dev and build-essentials (fucking nodejs libraries man...)
+* libpng-dev and build-essentials
 
 ## Running
 
 ```bash
-composer install
-npm install
 cp .env.example .env
+composer install
 php artisan key:generate
+npm install
 docker-compose up
 docker-compose up -d # run in background
 ```
