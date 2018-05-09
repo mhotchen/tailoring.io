@@ -1,18 +1,21 @@
 {
-    "name": "tailoring/api",
-    "description": "Backend of Tailoring Management Platform",
+    "name": "top/api",
+    "description": "API for the Tailoring Online Platform",
     "license": "proprietary",
     "type": "project",
     "require": {
         "php": "^7.2",
         "barryvdh/laravel-ide-helper": "^2.4",
+        "doctrine/dbal": "^2.7",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^5.6",
         "laravel/passport": "^6.0",
         "laravel/tinker": "^1.0",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "ramsey/uuid": "^3.7"
     },
     "require-dev": {
+        "behat/behat": "^3.4",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",

@@ -3,28 +3,28 @@ services:
 
     mailhog:
       image: mailhog/mailhog:latest
-      container_name: api-mailhog
+      container_name: top-mailhog
       ports:
         - "8081:8025"
 
     redis:
       image: redis:alpine
-      container_name: api-redis
+      container_name: top-redis
 
     postgres:
       image: postgres:10.3-alpine
-      container_name: api-postgres
+      container_name: top-postgres
       working_dir: /application
       volumes:
         - .:/application
       environment:
-        - POSTGRES_USER=root
+        - POSTGRES_USER=api
         - POSTGRES_PASSWORD=password
-        - POSTGRES_DB=api
+        - POSTGRES_DB=top
 
     webserver:
       image: nginx:alpine
-      container_name: api-webserver
+      container_name: top-webserver
       working_dir: /application
       volumes:
           - .:/application
@@ -32,11 +32,33 @@ services:
       ports:
        - "8080:80"
 
-    php-fpm:
+    php-cli:
       build: docker/php-fpm
-      container_name: api-php-fpm
+      container_name: top-php-cli
       working_dir: /application
+      env_file:
+        - .env
       volumes:
         - .:/application
         - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
 
+    php-fpm:
+      build: docker/php-fpm
+      container_name: top-php-fpm
+      working_dir: /application
+      env_file:
+        - .env
+      volumes:
+        - .:/application
+        - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+
+    php-queue-worker:
+      build: docker/php-fpm
+      container_name: top-php-queue-worker
+      working_dir: /application
+      env_file:
+        - .env
+      command: php artisan queue:work
+      volumes:
+        - .:/application
+        - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini

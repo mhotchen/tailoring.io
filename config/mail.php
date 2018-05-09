@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'localhost'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => 'hello@tailoring.io',
-        'name' => 'Your Tailoring fairy',
+        'address' => 'fairy@tailoring.io',
+        'name' => 'The tailoring fairy',
     ],
 
     /*

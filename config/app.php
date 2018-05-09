@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => 'Tailoring Management Platform',
+    'name' => 'Tailoring Online Platform',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'en-GB',
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'en-GB',
 
     /*
     |--------------------------------------------------------------------------
@@ -159,6 +159,11 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        /*
+         * Custom Service providers...
+         */
+        \App\Providers\SpaServiceProvider::class
 
     ],
 

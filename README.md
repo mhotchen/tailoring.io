@@ -1,9 +1,9 @@
-# Backend API for TMP
+# Tailoring Online Platform API
 
-This is the API for the tailoring management platform.
+This is the API for the Tailoring Online Platform (TOP).
 
-The objective of the tailoring management platform is to provide a complete set of tools for tailors to manage their
-business, such as customer and order management.
+The objective of TOP is to provide a complete set of tools for tailors to manage their business, such as customer and
+order management.
 
 This API provides all of that functionality over REST which the Single Page Application (SPA) then consumes.
 
