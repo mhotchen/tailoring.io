@@ -7,5 +7,4 @@
 @lang('user_verification.button')
 @endcomponent
 
-@lang('generic.email.signature')
 @endcomponent
