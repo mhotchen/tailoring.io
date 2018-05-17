@@ -37,7 +37,7 @@ final class UserVerifyEmail extends Mailable implements ShouldQueue
             ->markdown('emails.users.verify')
             ->with(
                 'verifyLink',
-                $this->linkGenerator->generate('/users/verifications/' . $this->user->email_verification)
+                $this->linkGenerator->generate('/user/verify/' . $this->user->email_verification)
             );
     }
 }
