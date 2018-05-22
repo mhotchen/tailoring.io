@@ -5,7 +5,7 @@ services:
       image: mailhog/mailhog:latest
       container_name: top-mailhog
       ports:
-        - "8081:8025"
+        - "8025:8025"
 
     redis:
       image: redis:alpine
@@ -30,7 +30,7 @@ services:
           - .:/application
           - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       ports:
-       - "8080:80"
+       - "8081:80"
 
     php-cli:
       build: docker/php-fpm
