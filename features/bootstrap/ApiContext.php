@@ -39,7 +39,7 @@ class ApiContext implements Context
         return [
             'company' => [
                 'data' => [
-                    'name'  => 'Tailoring Company ltd',
+                    'name'  => 'Tailoring CompanyController ltd',
                     'users' => [
                         [
                             'data' => [

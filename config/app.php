@@ -150,6 +150,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -163,7 +164,8 @@ return [
         /*
          * Custom Service providers...
          */
-        \App\Providers\SpaServiceProvider::class
+        App\Providers\SpaServiceProvider::class,
+        App\Providers\ValidatorServiceProvider::class,
 
     ],
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CompanyCreate;
-use App\Http\Resources\Company as CompanyResource;
+use App\Http\Resources\CompanyResource;
 use App\Mail\UserVerifyEmail;
 use App\Model\Company;
 use App\Model\User;

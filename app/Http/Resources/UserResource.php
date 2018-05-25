@@ -2,12 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Model\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Model\User
+ * @mixin User
  */
-class User extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * @param  \Illuminate\Http\Request $request
@@ -19,6 +20,7 @@ class User extends JsonResource
             'data' => [
                 'id' => $this->id,
                 'email' => $this->email,
+                'status' => $this->status,
             ],
         ];
     }

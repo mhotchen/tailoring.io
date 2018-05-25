@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
@@ -14,6 +14,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->app->register(IdeHelperServiceProvider::class);
+        Passport::ignoreMigrations();
     }
 }

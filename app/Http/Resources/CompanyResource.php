@@ -2,15 +2,17 @@
 
 namespace App\Http\Resources;
 
+use App\Model\Company;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Model\Company
+ * @mixin Company
  */
-class Company extends JsonResource
+class CompanyResource extends JsonResource
 {
     /**
-     * @param  \Illuminate\Http\Request $request
+     * @param  Request $request
      * @return array
      */
     public function toArray($request)
@@ -19,7 +21,7 @@ class Company extends JsonResource
             'data' => [
                 'id' => $this->id,
                 'name' => $this->name,
-                'users' => User::collection($this->users),
+                'users' => UserResource::collection($this->users),
             ],
         ];
     }
