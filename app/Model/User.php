@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Model;
 
 use Hash;
@@ -35,8 +34,6 @@ final class User extends Authenticatable
     public const STATUS_AWAITING_EMAIL_VERIFICATION = 'AWAITING_EMAIL_VERIFICATION';
     public const STATUS_AWAITING_PASSWORD_RESET = 'AWAITING_PASSWORD_RESET';
     public const STATUS_ACTIVE = 'ACTIVE';
-
-    public const ACCESS_TOKEN_KEY = 'main-token';
 
     use HasApiTokens, Notifiable;
 

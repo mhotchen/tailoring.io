@@ -17,4 +17,9 @@ final class Messages
     {
         return sprintf('fields.generic.array_length_%d', $length);
     }
+
+    public static function GENERIC_STRING_LENGTH_(int $length): string
+    {
+        return sprintf('fields.generic.string_length_%d', $length);
+    }
 }

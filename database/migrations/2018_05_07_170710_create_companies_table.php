@@ -15,8 +15,14 @@ class CreateCompaniesTable extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->uuid('id');
-            $table->text('name');
+            $table->string('name');
             $table->timestamps();
+
+            /*
+             * Although the company users relationship will be deleted, because users can be part of N companies
+             * they aren't automatically deleted so you'll need to delete them by hand if they no longer belong
+             * to any particular company.
+             */
 
             $table->primary('id');
         });

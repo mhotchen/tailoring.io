@@ -18,9 +18,17 @@ class CreateCompanyUserTable extends Migration
             $table->uuid('user_id');
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->primary(['company_id', 'user_id']);
+
+            $table->foreign('company_id')
+                ->references('id')
+                ->on('companies')
+                ->onDelete('cascade');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDeletE('cascade');
         });
     }
 
