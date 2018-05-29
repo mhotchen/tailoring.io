@@ -8,5 +8,10 @@ Route::post('/users/verifications', 'UserController@verifyEmail');
 // Routes that require auth
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/users/me', 'UserController@getFromAuth');
-    Route::post('/companies/{company}/customers', 'CustomerController@store')->middleware('can:actOnBehalfOf,company');
+
+    Route::post('/companies/{company}/customers', 'CustomerController@store')
+        ->middleware('can:actOnBehalfOf,company');
+
+    Route::get('/companies/{company}/customers/{customer}', 'CustomerController@get')
+        ->middleware('can:actOnBehalfOf,company');
 });

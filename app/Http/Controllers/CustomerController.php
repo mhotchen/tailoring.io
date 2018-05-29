@@ -13,6 +13,20 @@ use Illuminate\Support\Collection;
 final class CustomerController extends Controller
 {
     /**
+     * The reason for the company parameter is so that it's loaded in to the CompanyPolicy, which uses some Laravel/
+     * reflection magic to load the model based on the parameters of this method. As policies need to become
+     * stricter then we can move to using the Customer model only.
+     *
+     * @param Company  $company
+     * @param Customer $customer
+     * @return CustomerResource
+     */
+    public function get(Company $company, Customer $customer): CustomerResource
+    {
+        return new CustomerResource($customer);
+    }
+
+    /**
      * @param CustomerStore $customerStore
      * @param Company       $company
      * @return CustomerResource
