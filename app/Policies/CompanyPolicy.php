@@ -8,6 +8,6 @@ final class CompanyPolicy
 {
     public function actOnBehalfOf(User $user, Company $company): bool
     {
-        return $user->companies->containsStrict('id', $company->id);
+        return $user->is_active && $user->worksFor($company);
     }
 }

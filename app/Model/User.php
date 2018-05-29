@@ -15,6 +15,7 @@ use Laravel\Passport\HasApiTokens;
  * @property string $status
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property-read bool $is_active
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
@@ -49,6 +50,16 @@ final class User extends Authenticatable
     public function companies(): BelongsToMany
     {
         return $this->belongsToMany(Company::class);
+    }
+
+    public function getIsActiveAttribute(): bool
+    {
+        return $this->status === static::STATUS_ACTIVE;
+    }
+
+    public function worksFor(Company $company): bool
+    {
+        return $this->companies->containsStrict('id', $company->id);
     }
 
     /**
