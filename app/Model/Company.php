@@ -3,7 +3,6 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @property string $id
@@ -19,6 +18,8 @@ use Ramsey\Uuid\Uuid;
  */
 final class Company extends Model
 {
+    use GeneratesUniqueUuid;
+
     /** @var array */
     protected $fillable = ['name'];
 
@@ -38,7 +39,7 @@ final class Company extends Model
     public static function fromRequest(array $validatedRequestPayload): self
     {
         $company = new self;
-        $company->id = Uuid::uuid4();
+        $company->id = static::uniqueUuid();
         $company->name = $validatedRequestPayload['data']['name'];
 
         return $company;

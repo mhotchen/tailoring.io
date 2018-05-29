@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @property string $id
@@ -35,7 +34,7 @@ final class User extends Authenticatable
     public const STATUS_AWAITING_PASSWORD_RESET = 'AWAITING_PASSWORD_RESET';
     public const STATUS_ACTIVE = 'ACTIVE';
 
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, GeneratesUniqueUuid;
 
     /** @var array */
     protected $fillable = ['email', 'password'];
@@ -61,9 +60,9 @@ final class User extends Authenticatable
     public static function fromRequest(array $validatedRequestPayload): self
     {
         $user = new self;
-        $user->id = Uuid::uuid4();
+        $user->id = static::uniqueUuid();
         $user->email = $validatedRequestPayload['data']['email'];
-        $user->email_verification = Uuid::uuid4();
+        $user->email_verification = static::uniqueUuid('email_verification');
         $user->password = Hash::make($validatedRequestPayload['data']['password']);
         $user->status = self::STATUS_AWAITING_EMAIL_VERIFICATION;
 

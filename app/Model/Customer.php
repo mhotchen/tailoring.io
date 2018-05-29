@@ -4,7 +4,6 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @property string $id
@@ -33,6 +32,8 @@ use Ramsey\Uuid\Uuid;
  */
 final class Customer extends Model
 {
+    use GeneratesUniqueUuid;
+
     /** @var array */
     protected $fillable = ['name', 'email', 'telephone'];
 
@@ -61,7 +62,7 @@ final class Customer extends Model
 
     /**
      * @param array   $request
-     * @param User    $createdBy
+     * @param User    $createdBy Also added to the updatedBy field.
      * @param Company $company
      * @return Customer
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
@@ -69,7 +70,7 @@ final class Customer extends Model
     public static function fromRequest(array $request, User $createdBy, Company $company): self
     {
         $customer = new self;
-        $customer->id = Uuid::uuid4();
+        $customer->id = static::uniqueUuid();
         $customer->name = $request['data']['name'];
         $customer->createdBy()->associate($createdBy);
         $customer->updatedBy()->associate($createdBy);
@@ -85,5 +86,6 @@ final class Customer extends Model
 
         return $customer;
     }
+
 
 }

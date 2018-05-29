@@ -3,7 +3,6 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @property string $id
@@ -26,6 +25,8 @@ use Ramsey\Uuid\Uuid;
  */
 final class CustomerNote extends Model
 {
+    use GeneratesUniqueUuid;
+
     /** @var array */
     protected $fillable = ['note'];
 
@@ -51,7 +52,7 @@ final class CustomerNote extends Model
     public static function fromRequest(array $request, User $createdBy): self
     {
         $note = new self;
-        $note->id = Uuid::uuid4();
+        $note->id = static::uniqueUuid();
         $note->note = $request['data']['note'];
         $note->createdBy()->associate($createdBy);
         $note->updatedBy()->associate($createdBy);
