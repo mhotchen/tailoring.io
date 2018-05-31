@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Model\User;
+use App\Models\User;
 use App\Spa\UrlGenerator;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;

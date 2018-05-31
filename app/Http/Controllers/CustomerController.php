@@ -3,12 +3,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Resources\CustomerResource;
-use App\Model\Company;
-use App\Model\Customer;
-use App\Model\CustomerNote;
+use App\Models\Company;
+use App\Models\Customer;
 use Auth;
 use DB;
-use Illuminate\Support\Collection;
 
 final class CustomerController extends Controller
 {
@@ -27,29 +25,57 @@ final class CustomerController extends Controller
     }
 
     /**
-     * @param CustomerStoreRequest $customerStore
+     * @param CustomerStoreRequest $customerStoreRequest
      * @param Company              $company
      * @return CustomerResource
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      * @throws \Throwable
      */
-    public function store(CustomerStoreRequest $customerStore, Company $company): CustomerResource
+    public function post(CustomerStoreRequest $customerStoreRequest, Company $company): CustomerResource
     {
-        $request = $customerStore->validated();
-        $user = Auth::user();
+        $request = $customerStoreRequest->validated();
+        $customer = new Customer;
+        $customer->hydrateFromRequest($request, Auth::user(), $company);
+        $notesData = collect($request['data']['notes'])->filter(function(array $data) {
+            return isset($data['data']['note']) && $data['data']['note'] !== '';
+        });
 
-        $customer = Customer::fromRequest($request, $user, $company);
-        $notes = (new Collection($request['data']['notes']))
-            ->filter(function (array $note): bool {
-                return isset($note['data']['note']) && $note['data']['note'] !== '';
-            })
-            ->map(function (array $note) use ($user): CustomerNote {
-                return CustomerNote::fromRequest($note, $user);
-            });
-
-        DB::transaction(function () use ($customer, $notes) {
+        DB::transaction(function () use ($customer, $notesData) {
             $customer->save();
-            $customer->notes()->saveMany($notes);
+            $customer->createNewNotes($notesData, Auth::user());
+            $customer->load('notes');
+        });
+
+        return new CustomerResource($customer);
+    }
+
+    /**
+     * @param CustomerStoreRequest $customerStoreRequest
+     * @param Company              $company
+     * @param Customer             $customer
+     * @return CustomerResource
+     * @throws \Throwable
+     */
+    public function put(
+        CustomerStoreRequest $customerStoreRequest,
+        Company $company,
+        Customer $customer
+    ): CustomerResource
+    {
+        $request = $customerStoreRequest->validated();
+        $customer->hydrateFromRequest($request, Auth::user(), $company);
+        $notesData = collect($request['data']['notes'])->filter(function(array $data) {
+            return isset($data['data']['note']) && $data['data']['note'] !== '';
+        });
+
+        DB::transaction(function () use ($customer, $notesData) {
+            $customer->save();
+            $customer->loadMissing('notes');
+            $customer
+                ->deleteClearedNotes($notesData)
+                ->updateExistingNotes($notesData, Auth::user())
+                ->createNewNotes($notesData, Auth::user());
+            $customer->load('notes');
         });
 
         return new CustomerResource($customer);

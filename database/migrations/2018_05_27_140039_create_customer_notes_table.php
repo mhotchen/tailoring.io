@@ -45,6 +45,8 @@ class CreateCustomerNotesTable extends Migration
                 ->foreign('updated_by')
                 ->references('id')
                 ->on('users');
+
+            $table->index('created_at');
         });
     }
 

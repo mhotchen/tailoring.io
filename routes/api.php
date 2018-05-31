@@ -9,9 +9,11 @@ Route::post('/users/verifications', 'UserController@verifyEmail');
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/users/me', 'UserController@getFromAuth');
 
-    Route::post('/companies/{company}/customers', 'CustomerController@store')
-        ->middleware('can:actOnBehalfOf,company');
-
-    Route::get('/companies/{company}/customers/{customer}', 'CustomerController@get')
-        ->middleware('can:actOnBehalfOf,company');
+    Route::middleware('can:actOnBehalfOf,company')
+        ->prefix('companies/{company}')
+        ->group(function () {
+            Route::post('/customers',            'CustomerController@post');
+            Route::get( '/customers/{customer}', 'CustomerController@get' )->middleware('can:interactWith,customer');
+            Route::put( '/customers/{customer}', 'CustomerController@put' )->middleware('can:interactWith,customer');
+        });
 });

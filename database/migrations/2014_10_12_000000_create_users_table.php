@@ -1,6 +1,6 @@
 <?php
 
-use App\Model\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -11,12 +11,13 @@ class CreateUsersTable extends Migration
      * Run the migrations.
      *
      * @return void
+     * @throws \Illuminate\Database\QueryException
      */
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('password');
             $table->uuid('email_verification')->nullable();
             $table->enum('status', [
@@ -27,7 +28,12 @@ class CreateUsersTable extends Migration
             $table->timestamps();
 
             $table->primary('id');
+            $table->unique('email');
         });
+        DB::unprepared('
+            CREATE INDEX users_email_verification ON users (email_verification)
+            WHERE (email_verification IS NOT NULL)
+        ');
     }
 
     /**

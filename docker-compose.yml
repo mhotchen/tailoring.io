@@ -21,6 +21,8 @@ services:
         - POSTGRES_USER=api
         - POSTGRES_PASSWORD=password
         - POSTGRES_DB=top
+      ports:
+        - "5432:5432"
 
     webserver:
       image: nginx:alpine

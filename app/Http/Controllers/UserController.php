@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserAttemptLoginRequest;
 use App\Http\Requests\UserVerifyEmailRequest;
 use App\Http\Resources\UserLoggedInResource;
-use App\Model\User;
+use App\Models\User;
 use Auth;
 use GuzzleHttp\Client as HttpClient;
 use Hash;

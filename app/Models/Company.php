@@ -1,19 +1,19 @@
 <?php
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * @property string $id
- * @property string $name
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Model\Company whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Model\Company whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Model\Company whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Model\Company whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Model\User[] $users
+ * @property string                                                           $id
+ * @property string                                                           $name
+ * @property \Carbon\Carbon|null                                              $created_at
+ * @property \Carbon\Carbon|null                                              $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Company whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Company whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Company whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Company whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @mixin \Eloquent
  */
 final class Company extends Model

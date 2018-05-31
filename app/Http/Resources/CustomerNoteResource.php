@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Resources;
 
-use App\Model\CustomerNote;
+use App\Models\CustomerNote;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

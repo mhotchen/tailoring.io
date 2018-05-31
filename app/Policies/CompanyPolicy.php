@@ -1,8 +1,8 @@
 <?php
 namespace App\Policies;
 
-use App\Model\Company;
-use App\Model\User;
+use App\Models\Company;
+use App\Models\User;
 
 final class CompanyPolicy
 {
