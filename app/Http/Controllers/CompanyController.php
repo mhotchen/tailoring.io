@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CompanyCreate;
+use App\Http\Requests\CompanyCreateRequest;
 use App\Http\Resources\CompanyResource;
 use App\Mail\UserVerifyEmail;
 use App\Model\Company;
@@ -13,15 +13,15 @@ use Mail;
 final class CompanyController extends Controller
 {
     /**
-     * @param  CompanyCreate $request
-     * @param  UrlGenerator  $urlGenerator
+     * @param  CompanyCreateRequest $request
+     * @param  UrlGenerator         $urlGenerator
      * @return CompanyResource
      * @throws \BadMethodCallException
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      * @throws \InvalidArgumentException
      * @throws \Throwable
      */
-    public function create(CompanyCreate $request, UrlGenerator $urlGenerator): CompanyResource
+    public function create(CompanyCreateRequest $request, UrlGenerator $urlGenerator): CompanyResource
     {
         $validatedRequest = $request->validated();
         $company = Company::fromRequest($validatedRequest);

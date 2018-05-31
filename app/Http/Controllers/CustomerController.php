@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CustomerStore;
+use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Resources\CustomerResource;
 use App\Model\Company;
 use App\Model\Customer;
@@ -27,13 +27,13 @@ final class CustomerController extends Controller
     }
 
     /**
-     * @param CustomerStore $customerStore
-     * @param Company       $company
+     * @param CustomerStoreRequest $customerStore
+     * @param Company              $company
      * @return CustomerResource
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
      * @throws \Throwable
      */
-    public function store(CustomerStore $customerStore, Company $company): CustomerResource
+    public function store(CustomerStoreRequest $customerStore, Company $company): CustomerResource
     {
         $request = $customerStore->validated();
         $user = Auth::user();

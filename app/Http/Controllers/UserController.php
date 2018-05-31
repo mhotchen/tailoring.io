@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserAttemptLogin;
-use App\Http\Requests\UserVerifyEmail;
+use App\Http\Requests\UserAttemptLoginRequest;
+use App\Http\Requests\UserVerifyEmailRequest;
 use App\Http\Resources\UserLoggedInResource;
 use App\Model\User;
 use Auth;
@@ -29,12 +29,12 @@ final class UserController extends Controller
      * Annoyingly resources implement a Responsable interface whereas JsonResponse extends the Symfony Response class
      * so we can't do type hinting on the response of this method.
      *
-     * @param UserAttemptLogin $request
+     * @param UserAttemptLoginRequest $userAttemptLogin
      * @return UserLoggedInResource|JsonResponse
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function attemptLogin(UserAttemptLogin $userAttemptLogin)
+    public function attemptLogin(UserAttemptLoginRequest $userAttemptLogin)
     {
         $request = $userAttemptLogin->validated();
 
@@ -80,13 +80,13 @@ final class UserController extends Controller
     }
 
     /**
-     * @param UserVerifyEmail $userVerifyEmail
+     * @param UserVerifyEmailRequest $userVerifyEmail
      * @return UserLoggedInResource|JsonResponse
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @throws \Throwable
      */
-    public function verifyEmail(UserVerifyEmail $userVerifyEmail)
+    public function verifyEmail(UserVerifyEmailRequest $userVerifyEmail)
     {
         $request = $userVerifyEmail->validated();
 

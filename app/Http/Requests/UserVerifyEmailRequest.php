@@ -3,7 +3,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class UserVerifyEmail extends FormRequest
+final class UserVerifyEmailRequest extends FormRequest
 {
     public function authorize(): bool
     {
