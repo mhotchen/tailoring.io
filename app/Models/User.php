@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
 /**
+ * App\Models\User
+ *
  * @property string                                                                                                         $id
  * @property string                                                                                                         $email
  * @property string                                                                                                         $password
@@ -17,6 +19,7 @@ use Laravel\Passport\HasApiTokens;
  * @property \Carbon\Carbon|null                                                                                            $updated_at
  * @property-read bool                                                                                                      $is_active
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[]                                       $clients
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Company[]                                            $companies
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[]                                        $tokens
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
@@ -24,7 +27,6 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Company[]                                            $companies
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmailVerification($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereStatus($value)
  * @mixin \Eloquent

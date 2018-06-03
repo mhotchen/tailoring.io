@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * App\Models\CustomerNote
+ *
  * @property string                $id
  * @property string                $note
  * @property string                $customer_id
@@ -50,7 +52,7 @@ final class CustomerNote extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new OrderByScope('created_at', 'asc'));
+        static::addGlobalScope(new OrderByScope('created_at', 'ASC'));
     }
 
     /**

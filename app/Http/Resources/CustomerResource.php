@@ -25,7 +25,7 @@ class CustomerResource extends JsonResource
                 'telephone' => $this->telephone,
                 'created_at' => $this->created_at->toIso8601ZuluString(),
                 'updated_at' => $this->updated_at->toIso8601ZuluString(),
-                'notes' => CustomerNoteResource::collection($this->notes),
+                'notes' => $this->relationLoaded('notes') ? CustomerNoteResource::collection($this->notes) : [],
             ],
         ];
     }

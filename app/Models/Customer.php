@@ -1,12 +1,15 @@
 <?php
 namespace App\Models;
 
+use App\Models\Scopes\OrderByScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
 /**
+ * App\Models\Customer
+ *
  * @property string                                                                   $id
  * @property string                                                                   $name
  * @property string                                                                   $email
@@ -59,6 +62,15 @@ final class Customer extends Model
     public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new OrderByScope('updated_at', 'DESC'));
     }
 
     /**

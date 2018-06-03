@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Faker\Generator as Faker;
 
 /*
@@ -15,7 +16,9 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\User::class, function (Faker $faker) {
     return [
+        'id' => $faker->uuid,
         'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+        'password' => Hash::make('password'),
+        'status' => User::STATUS_ACTIVE,
     ];
 });

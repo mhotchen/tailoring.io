@@ -7,9 +7,50 @@ use App\Models\Company;
 use App\Models\Customer;
 use Auth;
 use DB;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 final class CustomerController extends Controller
 {
+    /**
+     * @param Company $company
+     * @param Request $request
+     * @return ResourceCollection
+     * @throws \InvalidArgumentException
+     */
+    public function index(Company $company, Request $request): ResourceCollection
+    {
+        $query = $company->customers()->limit(20);
+        if ($request->query('q')) {
+            // Normalize whitespace and explode in to different tokens.
+            $tokens = explode(' ', preg_replace('/\s+/', ' ', trim($request->query('q'))));
+            foreach ($tokens as $token) {
+                /*
+                 * Thanks to Postgres the following matches an index.
+                 *
+                 * If you need to modify it then don't forget to update the index!
+                 */
+                $query->whereRaw(
+                    "
+                        COALESCE(name, '') ||
+                        ' ' ||
+                        COALESCE(email, '') ||
+                        ' ' ||
+                        COALESCE(REGEXP_REPLACE(telephone, '[^\+a-zA-Z0-9]', '', 'g'), '')
+                        ~~* ?
+                    ",
+                    ["%$token%"]
+                );
+            }
+        }
+
+        return
+            CustomerResource::collection($query->get())
+                ->additional([
+                    'meta' => ['total_customers' => $company->customers()->count()]
+                ]);
+    }
+
     /**
      * The reason for the company parameter is so that it's loaded in to the CompanyPolicy, which uses some Laravel/
      * reflection magic to load the model based on the parameters of this method. As policies need to become
@@ -21,6 +62,10 @@ final class CustomerController extends Controller
      */
     public function get(Company $company, Customer $customer): CustomerResource
     {
+        // This line ensures the notes are added to the returned JSON since they're only added if they're loaded.
+        // We don't load notes on the home page to improve performance.
+        $customer->loadMissing('notes');
+
         return new CustomerResource($customer);
     }
 

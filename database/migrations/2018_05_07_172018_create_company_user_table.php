@@ -29,6 +29,9 @@ class CreateCompanyUserTable extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDeletE('cascade');
+
+            $table->index('company_id');
+            $table->index('user_id');
         });
     }
 

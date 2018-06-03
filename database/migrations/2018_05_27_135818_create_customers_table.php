@@ -10,6 +10,7 @@ class CreateCustomersTable extends Migration
      * Run the migrations.
      *
      * @return void
+     * @throws \Illuminate\Database\QueryException
      */
     public function up()
     {
@@ -47,7 +48,13 @@ class CreateCustomersTable extends Migration
                 ->foreign('updated_by')
                 ->references('id')
                 ->on('users');
+
+            $table->index('company_id');
         });
+
+        // We display the most recently updated customers per company on the home page in descending order of when
+        // the customer was last updated.
+        DB::unprepared('CREATE INDEX customers_sort_index ON customers (company_id ASC, updated_at DESC)');
     }
 
     /**

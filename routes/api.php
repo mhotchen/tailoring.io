@@ -12,6 +12,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::middleware('can:actOnBehalfOf,company')
         ->prefix('companies/{company}')
         ->group(function () {
+            Route::get( '/customers',            'CustomerController@index');
             Route::post('/customers',            'CustomerController@post');
             Route::get( '/customers/{customer}', 'CustomerController@get' )->middleware('can:interactWith,customer');
             Route::put( '/customers/{customer}', 'CustomerController@put' )->middleware('can:interactWith,customer');

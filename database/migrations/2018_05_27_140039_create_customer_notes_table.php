@@ -46,6 +46,7 @@ class CreateCustomerNotesTable extends Migration
                 ->references('id')
                 ->on('users');
 
+            $table->index('customer_id');
             $table->index('created_at');
         });
     }
