@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\Company
@@ -38,6 +39,40 @@ final class Company extends Model
     public function customers(): HasMany
     {
         return $this->hasMany(Customer::class);
+    }
+
+    /**
+     * @param string $searchTerm
+     * @return Collection|Customer[]
+     * @throws \InvalidArgumentException
+     */
+    public function findCustomers(string $searchTerm = null): Collection
+    {
+        $query = $this->customers()->limit(20);
+
+        // Normalize whitespace and explode in to different tokens.
+        $tokens = explode(' ', preg_replace('/\s+/', ' ', trim($searchTerm ?? '')));
+
+        foreach ($tokens as $token) {
+            /*
+             * Thanks to Postgres the following matches an index.
+             *
+             * If you need to modify it then don't forget to update the index!
+             */
+            $query->whereRaw(
+                "
+                    COALESCE(name, '') ||
+                    ' ' ||
+                    COALESCE(email, '') ||
+                    ' ' ||
+                    COALESCE(REGEXP_REPLACE(telephone, '[^\+a-zA-Z0-9]', '', 'g'), '')
+                    ~~* ?
+                ",
+                ["%$token%"]
+            );
+        }
+
+        return $query->get();
     }
 
     /**

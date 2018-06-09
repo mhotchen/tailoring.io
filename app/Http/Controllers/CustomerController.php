@@ -20,35 +20,10 @@ final class CustomerController extends Controller
      */
     public function index(Company $company, Request $request): ResourceCollection
     {
-        $query = $company->customers()->limit(20);
-        if ($request->query('q')) {
-            // Normalize whitespace and explode in to different tokens.
-            $tokens = explode(' ', preg_replace('/\s+/', ' ', trim($request->query('q'))));
-            foreach ($tokens as $token) {
-                /*
-                 * Thanks to Postgres the following matches an index.
-                 *
-                 * If you need to modify it then don't forget to update the index!
-                 */
-                $query->whereRaw(
-                    "
-                        COALESCE(name, '') ||
-                        ' ' ||
-                        COALESCE(email, '') ||
-                        ' ' ||
-                        COALESCE(REGEXP_REPLACE(telephone, '[^\+a-zA-Z0-9]', '', 'g'), '')
-                        ~~* ?
-                    ",
-                    ["%$token%"]
-                );
-            }
-        }
-
-        return
-            CustomerResource::collection($query->get())
-                ->additional([
-                    'meta' => ['total_customers' => $company->customers()->count()]
-                ]);
+        return CustomerResource::collection($company->findCustomers($request->query('q')))
+            ->additional([
+                'meta' => ['total_customers' => $company->customers()->count()]
+            ]);
     }
 
     /**
