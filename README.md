@@ -26,7 +26,7 @@ docker exec top-php-cli ./artisan migrate:fresh --seed
 * The code must be clear and simple. This is largely a CRUD application so it doesn't require a complex architecture yet
 * Response times should be within ~50ms in development (ie. without network latency)
 * With control over the client we can design the endpoints to be perfectly catered to what the client needs
-* Follow the principles of YAGI and KISS. Only do things when they're necessary and never a moment before
+* Follow the principles of YAGNI and KISS. Only do things when they're necessary and never a moment before
 * Consider the scale of thousands of users with potentially a couple of million customers, not beyond. This application
   has a pretty specific niche and will never grow bigger than this, so the complexity added to consider serious scale
   will never pay off. In addition if we ever do reach that scale it will be smarter to start with a simpler code base
