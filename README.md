@@ -18,7 +18,10 @@ This API provides all of that functionality using JSON over HTTP which the Singl
 cp .env.example .env # You'll need to edit this ready for local development
 composer install
 docker-compose up
-docker exec top-php-cli ./artisan migrate:fresh --seed
+docker exec top-php-cli ./artisan migrate:fresh
+docker exec top-php-cli php artisan passport:install
+# Copy the second client's secret in to your .env and restart the containers
+docker exec top-php-cli php artisan db:seed
 ```
 
 ## Design goals
