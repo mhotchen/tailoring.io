@@ -16,7 +16,7 @@ class AccountsSeeder extends Seeder
     public function run()
     {
         /*
-         * Expect this to take a while: 500 users, 500,000 customers, ~5 million notes.
+         * Expect this to take a while: 500 users, ~500,000 customers, ~2.5 million notes.
          *
          * This means during development missing indexes will be obvious.
          */
@@ -26,19 +26,21 @@ class AccountsSeeder extends Seeder
             $company = factory(Company::class)->make();
             $user->companies()->save($company);
 
-            factory(Customer::class, 1000)->make()->each(function (Customer $customer) use ($user, $company): void {
-                $customer->createdBy()->associate($user);
-                $customer->updatedBy()->associate($user);
-                $customer->company()->associate($company);
-                $customer->save();
-                factory(CustomerNote::class, rand(0, 20))->make()->each(
-                    function (CustomerNote $note) use ($customer, $user): void {
-                        $note->createdBy()->associate($user);
-                        $note->updatedBy()->associate($user);
-                        $customer->notes()->save($note);
-                    }
-                );
-            });
+            factory(Customer::class, random_int(900, 1000))
+                ->make()
+                ->each(function (Customer $customer) use ($user, $company): void {
+                    $customer->createdBy()->associate($user);
+                    $customer->updatedBy()->associate($user);
+                    $customer->company()->associate($company);
+                    $customer->save();
+                    factory(CustomerNote::class, random_int(0, 10))->make()->each(
+                        function (CustomerNote $note) use ($customer, $user): void {
+                            $note->createdBy()->associate($user);
+                            $note->updatedBy()->associate($user);
+                            $customer->notes()->save($note);
+                        }
+                    );
+                });
         });
     }
 }
