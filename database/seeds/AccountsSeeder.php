@@ -34,9 +34,10 @@ class AccountsSeeder extends Seeder
                     $customer->company()->associate($company);
                     $customer->save();
                     factory(CustomerNote::class, random_int(0, 10))->make()->each(
-                        function (CustomerNote $note) use ($customer, $user): void {
+                        function (CustomerNote $note) use ($customer, $user, $company): void {
                             $note->createdBy()->associate($user);
                             $note->updatedBy()->associate($user);
+                            $note->company()->associate($company);
                             $customer->notes()->save($note);
                         }
                     );

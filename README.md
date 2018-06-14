@@ -78,7 +78,25 @@ queries automatically have the correct where clauses when calling `$company->cus
 directly against the customers and potentially forgetting the WHERE clause to limit the customers to only those with
 the correct `company_id`.
 
-In addition use UUID for all IDs. There's a trait for the models to ensure each UUID is unique (although the chances of
-a collision are already astronomically small). Upon research the performance implication of using a UUID as the ID
-is minute, small enough to have no performance penalty unless we're in the billions of rows.
+Because we're targeting poor/offline internet usage it's necessary for the client to be able to generate their own
+IDs for each resource so that they can be linked up offline and stored on the server when the connection is available.
+In order to do so in a multi-tenant application without allowing hackers to potentially cause ID conflicts, every
+database table should have a composite primary key of the client-side generated ID along with the identifier of the
+tenant (the tailoring company) which is generated server-side.
 
+The tailoring company and user IDs are generated server-side to guarantee uniqueness.
+
+This means if the user of the client decides to modify the ID generating behavior to remove the uniqueness and to try
+and cause IDs to conflict with those of other tenants then they can't because the ID must only has to be unique for the
+specific tailoring company the update is being applied to. This may cause a server-side crash or undesired behavior
+for that specific company, but no damage will be done to the legitimate users of the application.
+
+Whilst the ID of a company is passed in as a parameter to all requests, a policy is used that ensures the user
+submitting the request works for that company.
+
+In addition, attempts to update an ID of an existing resource will be ignored. The field is only used when creating
+new resources.
+
+IDs are all UUIDs which slightly increases security with obscurity, and allows the client to generate its own UUIDs with
+an extremely low probability of collision (especially with the UUID only needing to be unique for that specific
+company).

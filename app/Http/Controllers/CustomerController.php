@@ -60,9 +60,9 @@ final class CustomerController extends Controller
             return isset($data['data']['note']) && $data['data']['note'] !== '';
         });
 
-        DB::transaction(function () use ($customer, $notesData) {
+        DB::transaction(function () use ($customer, $notesData, $company) {
             $customer->save();
-            $customer->createNewNotes($notesData, Auth::user());
+            $customer->createNewNotes($notesData, Auth::user(), $company);
             $customer->load('notes');
         });
 
@@ -83,18 +83,22 @@ final class CustomerController extends Controller
     ): CustomerResource
     {
         $request = $customerStoreRequest->validated();
-        $customer->hydrateFromRequest($request, Auth::user(), $company);
+
+        // Ignore the ID field in the request, use the one from the loaded model instead.
+        unset($request['data']['id']);
+
+        $customer->hydrateFromRequest($request, Auth::user());
         $notesData = collect($request['data']['notes'])->filter(function(array $data) {
             return isset($data['data']['note']) && $data['data']['note'] !== '';
         });
 
-        DB::transaction(function () use ($customer, $notesData) {
+        DB::transaction(function () use ($customer, $notesData, $company) {
             $customer->save();
             $customer->loadMissing('notes');
             $customer
                 ->deleteClearedNotes($notesData)
                 ->updateExistingNotes($notesData, Auth::user())
-                ->createNewNotes($notesData, Auth::user());
+                ->createNewNotes($notesData, Auth::user(), $company);
             $customer->load('notes');
         });
 

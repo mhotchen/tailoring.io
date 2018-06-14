@@ -15,11 +15,11 @@ class CreateCustomersTable extends Migration
     public function up()
     {
         Schema::create('customers', function (Blueprint $table) {
+            $table->uuid('company_id');
             $table->uuid('id');
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('telephone')->nullable();
-            $table->uuid('company_id');
             $table->uuid('created_by');
             $table->uuid('updated_by');
             $table->timestamps();
@@ -32,7 +32,7 @@ class CreateCustomersTable extends Migration
              * first.
              */
 
-            $table->primary('id');
+            $table->primary(['company_id', 'id']);
 
             $table->foreign('company_id')
                 ->references('id')

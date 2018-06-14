@@ -36,10 +36,8 @@ use Illuminate\Support\Collection;
  */
 final class Customer extends Model
 {
-    use GeneratesUniqueUuid;
-
     /** @var array */
-    protected $fillable = ['name', 'email', 'telephone'];
+    protected $fillable = ['id', 'name', 'email', 'telephone'];
 
     /** @var array */
     protected $casts = ['id' => 'string'];
@@ -74,25 +72,30 @@ final class Customer extends Model
     }
 
     /**
-     * @param array   $request
-     * @param User    $updatedBy
-     * @param Company $company
+     * @param array        $request
+     * @param User         $user
+     * @param Company|null $company Only required when creating a new customer, otherwise it's ignored.
      * @return $this
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws \LogicException
      */
-    public function hydrateFromRequest(array $request, User $updatedBy, Company $company): self
+    public function hydrateFromRequest(array $request, User $user, Company $company = null): self
     {
         // Update the customer
         $this->fill($request['data']);
-        $this->company()->associate($company);
 
         if (!$this->exists) {
-            $this->id = static::uniqueUuid();
-            $this->createdBy()->associate($updatedBy);
+            $this->createdBy()->associate($user);
+
+            if (!$company) {
+                throw new \LogicException("'company' is required when creating a customer");
+            }
+
+            $this->company()->associate($company);
         }
 
         if ($this->isDirty()) {
-            $this->updatedBy()->associate($updatedBy);
+            $this->updatedBy()->associate($user);
         }
 
         return $this;
@@ -130,8 +133,7 @@ final class Customer extends Model
                 ->notes
                 ->whereIn('id', $this->getNoteIds($notesData))
                 ->map(function (CustomerNote $note) use ($notesData, $updatedBy): CustomerNote {
-                    // Ignore the warning here, it's a bug in Laravel where it has the wrong return type.
-                    $note->hydrateFromRequest($notesData->firstWhere('data.id', $note->id), $updatedBy);
+                    $note->hydrateFromRequest((array) $notesData->firstWhere('data.id', $note->id), $updatedBy);
 
                     return $note;
                 })
@@ -145,18 +147,17 @@ final class Customer extends Model
      *
      * @param Collection $notesData
      * @param User       $updatedBy
+     * @param Company    $company
      * @return $this
      */
-    public function createNewNotes(Collection $notesData, User $updatedBy): self
+    public function createNewNotes(Collection $notesData, User $updatedBy, Company $company): self
     {
         $this->notes()->saveMany(
             $notesData
-                ->filter(function (array $notesData): bool {
-                    return !isset($notesData['data']['id']);
-                })
-                ->map(function (array $requestNote) use ($updatedBy): CustomerNote {
+                ->whereNotIn('data.id', $this->notes->pluck('id'))
+                ->map(function (array $requestNote) use ($updatedBy, $company): CustomerNote {
                     $note = new CustomerNote;
-                    $note->hydrateFromRequest($requestNote, $updatedBy);
+                    $note->hydrateFromRequest($requestNote, $updatedBy, $company);
 
                     return $note;
                 })

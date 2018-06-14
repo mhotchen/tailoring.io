@@ -14,11 +14,13 @@ final class CustomerStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'data.id'                => 'required|uuid',
             'data.name'              => 'required|string',
             'data.email'             => 'nullable|email',
             'data.telephone'         => 'nullable|string',
             'data.notes'             => 'required|array',
-            'data.notes.*.data.note' => 'nullable|string|max:200', // Allow nullable to make front end code tidier.
+            'data.notes.*.data.id'   => 'nullable|uuid', // Allow nullable to make front end code tidier.
+            'data.notes.*.data.note' => 'nullable|string|max:200',
         ];
     }
 
