@@ -21,8 +21,8 @@ use Illuminate\Support\Collection;
  * @property \Carbon\Carbon|null                                                      $updated_at
  * @property-read \App\Models\Company                                                 $company
  * @property-read \App\Models\User                                                    $createdBy
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CustomerNote[] $notes
  * @property-read \App\Models\User                                                    $updatedBy
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CustomerNote[] $notes
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Customer whereCompanyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Customer whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Customer whereCreatedBy($value)
