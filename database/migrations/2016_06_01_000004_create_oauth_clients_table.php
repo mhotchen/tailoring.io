@@ -1,7 +1,7 @@
 <?php
 
+use App\Database\Schema\CustomBlueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateOauthClientsTable extends Migration
@@ -13,7 +13,7 @@ class CreateOauthClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('oauth_clients', function (Blueprint $table) {
+        Schema::create('oauth_clients', function (CustomBlueprint $table) {
             $table->increments('id');
             $table->uuid('user_id')->nullable();
             $table->string('name');

@@ -167,6 +167,7 @@ return [
         /*
          * Custom Service providers...
          */
+        App\Providers\DatabaseServiceProvider::class,
         App\Providers\SpaServiceProvider::class,
         App\Providers\ValidatorServiceProvider::class,
 

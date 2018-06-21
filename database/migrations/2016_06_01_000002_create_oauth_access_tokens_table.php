@@ -1,7 +1,7 @@
 <?php
 
+use App\Database\Schema\CustomBlueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateOauthAccessTokensTable extends Migration
@@ -13,7 +13,7 @@ class CreateOauthAccessTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create('oauth_access_tokens', function (Blueprint $table) {
+        Schema::create('oauth_access_tokens', function (CustomBlueprint $table) {
             $table->string('id', 100)->primary();
             $table->uuid('user_id')->nullable();
             $table->integer('client_id');

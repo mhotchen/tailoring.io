@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'default' => 'pgsql',
+    'default' => 'master',
 
     'connections' => [
-        'pgsql' => [
-            'driver' => 'pgsql',
+        'master' => [
+            'driver' => 'pgsql-custom',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'forge'),

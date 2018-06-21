@@ -1,7 +1,7 @@
 <?php
 
+use App\Database\Schema\CustomBlueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateCompanyUserTable extends Migration
@@ -13,7 +13,7 @@ class CreateCompanyUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('company_user', function (Blueprint $table) {
+        Schema::create('company_user', function (CustomBlueprint $table) {
             $table->uuid('company_id');
             $table->uuid('user_id');
             $table->timestamps();

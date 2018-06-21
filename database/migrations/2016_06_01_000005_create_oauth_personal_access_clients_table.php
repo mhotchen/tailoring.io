@@ -1,7 +1,7 @@
 <?php
 
+use App\Database\Schema\CustomBlueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateOauthPersonalAccessClientsTable extends Migration
@@ -13,7 +13,7 @@ class CreateOauthPersonalAccessClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('oauth_personal_access_clients', function (Blueprint $table) {
+        Schema::create('oauth_personal_access_clients', function (CustomBlueprint $table) {
             $table->increments('id');
             $table->integer('client_id');
             $table->timestamps();

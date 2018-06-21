@@ -1,7 +1,7 @@
 <?php
 
+use App\Database\Schema\CustomBlueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateCustomerNotesTable extends Migration
@@ -13,7 +13,7 @@ class CreateCustomerNotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('customer_notes', function (Blueprint $table) {
+        Schema::create('customer_notes', function (CustomBlueprint $table) {
             $table->uuid('company_id');
             $table->uuid('id');
             $table->uuid('customer_id');

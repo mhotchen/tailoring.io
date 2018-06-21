@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CustomerNote whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CustomerNote whereUpdatedBy($value)
  * @mixin \Eloquent
+ * @property string $company_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CustomerNote whereCompanyId($value)
  */
 final class CustomerNote extends Model
 {
