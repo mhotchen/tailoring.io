@@ -41,6 +41,9 @@ final class MeasurementSetting extends Model
 {
     use HandlesPostgresArrays, GeneratesUniqueUuid;
 
+    /** @var array */
+    protected $casts = ['id' => 'string'];
+
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -57,7 +60,7 @@ final class MeasurementSetting extends Model
     }
 
     /**
-     * @param iterable $garmentTypes
+     * @param iterable|GarmentType[] $garmentTypes
      * @throws \InvalidArgumentException
      */
     public function setGarmentTypesAttribute(iterable $garmentTypes): void

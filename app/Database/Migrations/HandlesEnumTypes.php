@@ -12,16 +12,19 @@ trait HandlesEnumTypes
     /**
      * @param string       $name
      * @param array|Enum[] $values
-     * @throws \Illuminate\Database\QueryException
+     * @throws \Throwable
      */
     public function createEnumType(string $name, array $values): void
     {
-        DB::unprepared(sprintf('CREATE TYPE "%s" AS ENUM (%s)', $name, implode(', ', array_map(
-            function (Enum $value): string {
-                return "'$value'";
-            },
-            $values
-        ))));
+        DB::transaction(function () use ($name, $values) {
+            $this->dropEnumType($name);
+            DB::unprepared(sprintf('CREATE TYPE "%s" AS ENUM (%s)', $name, implode(', ', array_map(
+                function (Enum $value): string {
+                    return "'$value'";
+                },
+                $values
+            ))));
+        });
     }
 
     /**

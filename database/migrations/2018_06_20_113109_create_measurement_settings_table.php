@@ -1,5 +1,6 @@
 <?php
 
+use App\Database\Migrations\HandlesConstraints;
 use App\Database\Migrations\HandlesEnumTypes;
 use App\Database\Schema\CustomBlueprint;
 use App\Garment\GarmentType;
@@ -9,7 +10,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateMeasurementSettingsTable extends Migration
 {
-    use HandlesEnumTypes;
+    use HandlesEnumTypes, HandlesConstraints;
 
     /**
      * Run the migrations.
@@ -74,6 +75,45 @@ class CreateMeasurementSettingsTable extends Migration
                 ->references('id')
                 ->on('users');
         });
+
+        // Ensure min_value is smaller than the max_value.
+        $this->createConstraint('measurement_settings', 'min_lt_max', '"min_value" < "max_value"');
+
+        // Only BODY measurement settings can have more than one garment type, the others must have exactly one.
+        // The coalesce is because array_length returns NULL for empty arrays which when compared to a number returns
+        // NULL which isn't an explicit FALSE value; constraints always pass unless the returned value is a proper
+        // FALSE.
+        $this->createConstraint(
+            'measurement_settings',
+            'garment_type_count',
+            sprintf(
+                '
+                ("type" = \'%s\' AND COALESCE(ARRAY_LENGTH("garment_types", 1), 0) >= 1)
+                OR
+                ("type" != \'%s\' AND COALESCE(ARRAY_LENGTH("garment_types", 1), 0) = 1)
+                ',
+                MeasurementType::BODY(),
+                MeasurementType::BODY()
+            )
+        );
+
+        // BODY and GARMENT measurements cannot be less than 0, SAMPLE_ADJUSTMENT and ALTERATION are adjustments to
+        // an existing measurement so they can be negative values.
+        $this->createConstraint(
+            'measurement_settings',
+            'min_length_min_value',
+            sprintf(
+                '
+                ("type" = ANY(ARRAY[\'%s\', \'%s\']::measurement_type[]) AND min_value >= 0)
+                OR
+                ("type" = ANY(ARRAY[\'%s\', \'%s\']::measurement_type[]))
+                ',
+                MeasurementType::BODY(),
+                MeasurementType::GARMENT(),
+                MeasurementType::SAMPLE_ADJUSTMENT(),
+                MeasurementType::ALTERATION()
+            )
+        );
     }
 
     /**
