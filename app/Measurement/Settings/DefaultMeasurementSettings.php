@@ -228,77 +228,77 @@ final class DefaultMeasurementSettings
             new DefaultMeasurementSetting(
                 'measurements.default.shirt.neck',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::SHIRT()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.shirt.shoulder_width',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::SHIRT()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.shirt.chest',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::SHIRT()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.shirt.waist',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::SHIRT()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.shirt.hips',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::SHIRT()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.shirt.back_length',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::SHIRT()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.shirt.front_length',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::SHIRT()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.shirt.bicep',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::SHIRT()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.shirt.forearm',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::SHIRT()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.shirt.sleeve_length',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::SHIRT()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.shirt.cuff',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::SHIRT()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
@@ -309,56 +309,56 @@ final class DefaultMeasurementSettings
             new DefaultMeasurementSetting(
                 'measurements.default.trousers.waistband',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::TROUSERS()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.trousers.seat',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::TROUSERS()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.trousers.thigh',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::TROUSERS()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.trousers.knee',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::TROUSERS()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.trousers.hem',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::TROUSERS()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.trousers.crotch',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::TROUSERS()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.trousers.outside_leg',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::TROUSERS()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.trousers.inside_leg',
                 MeasurementType::SAMPLE_ADJUSTMENT(),
-                [GarmentType::WAISTCOAT()],
+                [GarmentType::TROUSERS()],
                 -10 * self::CENTIMETER_TO_MICROMETER,
                  10 * self::CENTIMETER_TO_MICROMETER
             ),
