@@ -60,12 +60,33 @@ final class MeasurementSetting extends Model
     }
 
     /**
+     * @return MeasurementType
+     * @throws \UnexpectedValueException
+     */
+    public function getTypeAttribute(): MeasurementType
+    {
+        return new MeasurementType($this->attributes['type']);
+    }
+
+    /**
      * @param iterable|GarmentType[] $garmentTypes
      * @throws \InvalidArgumentException
      */
     public function setGarmentTypesAttribute(iterable $garmentTypes): void
     {
         $this->attributes['garment_types'] = $this->toPostgresArray($garmentTypes);
+    }
+
+    /**
+     * @return Collection|GarmentType[]
+     * @throws \InvalidArgumentException
+     */
+    public function getGarmentTypesAttribute(): Collection
+    {
+        return (new Collection($this->fromPostgresArray($this->attributes['garment_types'])))
+            ->map(function (string $garmentType): GarmentType {
+                return new GarmentType($garmentType);
+            });
     }
 
     /**
