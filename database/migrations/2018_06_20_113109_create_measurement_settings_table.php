@@ -16,15 +16,11 @@ class CreateMeasurementSettingsTable extends Migration
      * Run the migrations.
      *
      * @return void
+     * @throws Throwable
      * @throws \Illuminate\Database\QueryException
      */
     public function up()
     {
-        // Don't include ALL enum values because if future migrations add new values then they'll break when doing a
-        // fresh migration (it will insert all values immediately then try to add the new value in the migration with
-        // an alteration). Remember a migration is a snapshot of a point in time and should not rely on dynamic
-        // information.
-
         $this->createEnumType('garment_type', [
             GarmentType::JACKET(),
             GarmentType::SHIRT(),

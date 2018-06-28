@@ -21,6 +21,7 @@ class CompanyResource extends JsonResource
             'data' => [
                 'id' => $this->id,
                 'name' => $this->name,
+                'unit_of_measurement' => $this->unit_of_measurement,
                 'users' => UserResource::collection($this->users),
             ],
         ];
