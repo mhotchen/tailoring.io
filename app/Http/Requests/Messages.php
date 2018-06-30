@@ -9,6 +9,7 @@ final class Messages
     public const GENERIC_REQUIRED = 'fields.generic.required';
     public const GENERIC_STRING   = 'fields.generic.string';
     public const GENERIC_UUID     = 'fields.generic.uuid';
+    public const GENERIC_ENUM     = 'fields.generic.enum';
     public const PASSWORD_LENGTH  = 'fields.password.length';
     public const PASSWORD_INVALID = 'fields.password.invalid';
     public const VERIFY_CODE_INVALID = 'fields.verify.code_invalid';

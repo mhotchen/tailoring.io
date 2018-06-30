@@ -2,12 +2,13 @@
 namespace App\Http\Requests\Validators;
 
 use Illuminate\Validation\Validator;
-use Ramsey\Uuid\Uuid as RamseyUuid;
+use MyCLabs\Enum\Enum as EnumBaseClass;
 
-final class Uuid
+final class Enum
 {
     public function validate($attribute, $value, $parameters, Validator $validator): bool
     {
-        return RamseyUuid::isValid($value);
+        $class = $parameters[0];
+        return get_parent_class($class) === EnumBaseClass::class && $class::isValid($value);
     }
 }

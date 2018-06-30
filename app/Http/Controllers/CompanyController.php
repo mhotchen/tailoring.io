@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CompanyCreateRequest;
+use App\Http\Requests\CompanyUpdateRequest;
 use App\Http\Resources\CompanyResource;
 use App\Mail\UserVerifyEmail;
 use App\Measurement\Settings\DefaultMeasurementSetting;
@@ -10,6 +11,7 @@ use App\Models\Company;
 use App\Models\MeasurementSetting;
 use App\Models\User;
 use App\Spa\UrlGenerator;
+use Auth;
 use DB;
 use Illuminate\Support\Collection;
 use Mail;
@@ -54,6 +56,26 @@ final class CompanyController extends Controller
         Mail::to($user->email)
             ->send(new UserVerifyEmail($user, $urlGenerator));
 
+        return new CompanyResource($company);
+    }
+
+    /**
+     * @param CompanyUpdateRequest $request
+     * @param Company              $company
+     * @return CompanyResource
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws \Throwable
+     */
+    public function update(CompanyUpdateRequest $request, Company $company): CompanyResource
+    {
+        $company->fill($request->validated()['data']);
+        DB::transaction(function () use ($company) {
+            if ($company->isDirty(['unit_of_measurement'])) {
+                $company->roundMeasurementSettingsToUnitOfMeasurement(Auth::user());
+            }
+
+            $company->save();
+        });
         return new CompanyResource($company);
     }
 }

@@ -9,11 +9,21 @@ use MyCLabs\Enum\Enum;
  */
 final class UnitOfMeasurementSetting extends Enum
 {
-    protected const INCHES = 'INCHES';
+    protected const INCHES      = 'INCHES';
     protected const CENTIMETERS = 'CENTIMETERS';
+
+    private const ROUND_MEASUREMENT_TO_NEAREST = [
+        self::INCHES      => 12700, // Half an inch in micrometers.
+        self::CENTIMETERS => 10000, // 1 CM in micrometers.
+    ];
 
     public static function DEFAULT(): self
     {
         return self::CENTIMETERS();
+    }
+
+    public function getRoundMeasurementToNearestValue(): int
+    {
+        return self::ROUND_MEASUREMENT_TO_NEAREST[$this->value];
     }
 }

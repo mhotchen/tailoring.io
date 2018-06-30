@@ -5,6 +5,7 @@ use App\Measurement\Settings\UnitOfMeasurementSetting;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Collection;
 
 /**
@@ -30,7 +31,7 @@ final class Company extends Model
     use GeneratesUniqueUuid;
 
     /** @var array */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'unit_of_measurement'];
 
     /** @var array */
     protected $casts = ['id' => 'string'];
@@ -93,6 +94,15 @@ final class Company extends Model
         return $query->get();
     }
 
+    public function roundMeasurementSettingsToUnitOfMeasurement(User $updatedBy): void
+    {
+        $this->measurementSettings()->update([
+            'min_value' => $this->getRoundMeasurementToNearestUnitOfMeasurementExpression('min_value'),
+            'max_value' => $this->getRoundMeasurementToNearestUnitOfMeasurementExpression('max_value'),
+            'updated_by' => $updatedBy->id,
+        ]);
+    }
+
     /**
      * @param array $validatedRequestPayload
      * @return self
@@ -106,5 +116,14 @@ final class Company extends Model
         $company->unit_of_measurement = UnitOfMeasurementSetting::DEFAULT();
 
         return $company;
+    }
+
+    private function getRoundMeasurementToNearestUnitOfMeasurementExpression(string $column): Expression
+    {
+        return new Expression(sprintf(
+            'ROUND(%s / %2$d.0) * %2$d',
+            $column,
+            $this->unit_of_measurement->getRoundMeasurementToNearestValue()
+        ));
     }
 }
