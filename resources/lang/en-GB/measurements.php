@@ -33,7 +33,7 @@ return [
             'chest' => 'Chest',
             'waist' => 'Waist',
             'hips' => 'Hips',
-            'front_length' => 'Font length',
+            'front_length' => 'Front length',
             'back_length' => 'Back length',
         ],
         'shirt' => [
