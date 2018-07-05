@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MeasurementSettingUpdateRequest;
 use App\Http\Resources\MeasurementSettingResource;
 use App\Models\Company;
 use App\Models\MeasurementSetting;
@@ -20,6 +21,29 @@ final class MeasurementSettingController extends Controller
     {
         // TODO partial index on deleted_at where NULL
         return MeasurementSettingResource::collection($company->measurementSettings()->whereNull('deleted_at')->get());
+    }
+
+    /**
+     * @param MeasurementSettingUpdateRequest $request
+     * @param Company                         $company
+     * @param string                          $id
+     * @return MeasurementSettingResource
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    public function put(
+        MeasurementSettingUpdateRequest $request,
+        Company $company,
+        string $id
+    ): MeasurementSettingResource
+    {
+        /** @var MeasurementSetting $measurementSetting */
+        $measurementSetting = $company->measurementSettings()->findOrFail($id);
+        $measurementSetting->fill($request->validated()['data']);
+        $measurementSetting->updatedBy()->associate(Auth::user());
+        $measurementSetting->save();
+
+        return new MeasurementSettingResource($measurementSetting);
     }
 
     /**

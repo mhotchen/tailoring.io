@@ -45,6 +45,9 @@ final class MeasurementSetting extends Model
     /** @var array */
     protected $casts = ['id' => 'string'];
 
+    /** @var array */
+    protected $fillable = ['name'];
+
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
