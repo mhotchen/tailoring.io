@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Garment\GarmentType;
 use App\Measurement\MeasurementType;
 use App\Measurement\Settings\DefaultMeasurementSetting;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
@@ -56,7 +57,7 @@ final class MeasurementSetting extends Model
 
     public function deletedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'updated_by');
+        return $this->belongsTo(User::class, 'deleted_by');
     }
 
     /**
@@ -104,5 +105,16 @@ final class MeasurementSetting extends Model
         $this->garment_types = $default->getGarmentTypes();
         $this->min_value = $default->getMinValue();
         $this->max_value = $default->getMaxValue();
+    }
+
+    /**
+     * @param User $deletedBy
+     * @throws \InvalidArgumentException
+     */
+    public function softDelete(User $deletedBy): void
+    {
+        $this->deletedBy()->associate($deletedBy);
+        $this->deleted_at = Carbon::now();
+        $this->save();
     }
 }
