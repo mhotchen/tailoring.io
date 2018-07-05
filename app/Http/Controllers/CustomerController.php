@@ -27,16 +27,15 @@ final class CustomerController extends Controller
     }
 
     /**
-     * The reason for the company parameter is so that it's loaded in to the CompanyPolicy, which uses some Laravel/
-     * reflection magic to load the model based on the parameters of this method. As policies need to become
-     * stricter then we can move to using the Customer model only.
-     *
-     * @param Company  $company
-     * @param Customer $customer
+     * @param Company $company
+     * @param string  $id
      * @return CustomerResource
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function get(Company $company, Customer $customer): CustomerResource
+    public function get(Company $company, string $id): CustomerResource
     {
+        $customer = $company->customers()->findOrFail($id);
+
         // This line ensures the notes are added to the returned JSON since they're only added if they're loaded.
         // We don't load notes on the home page to improve performance.
         $customer->loadMissing('notes');
@@ -72,17 +71,14 @@ final class CustomerController extends Controller
     /**
      * @param CustomerStoreRequest $customerStoreRequest
      * @param Company              $company
-     * @param Customer             $customer
+     * @param string               $id
      * @return CustomerResource
      * @throws \Throwable
      */
-    public function put(
-        CustomerStoreRequest $customerStoreRequest,
-        Company $company,
-        Customer $customer
-    ): CustomerResource
+    public function put(CustomerStoreRequest $customerStoreRequest, Company $company, string $id): CustomerResource
     {
         $request = $customerStoreRequest->validated();
+        $customer = $company->customers()->findOrFail($id);
 
         // Ignore the ID field in the request, use the one from the loaded model instead.
         unset($request['data']['id']);

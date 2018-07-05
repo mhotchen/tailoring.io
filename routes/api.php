@@ -12,12 +12,12 @@ Route::middleware(['auth:api'])->group(function () {
     Route::middleware('can:actOnBehalfOf,company')
         ->prefix('companies/{company}')
         ->group(function () {
-            Route::put('',                       'CompanyController@update');
-            Route::get( '/customers',            'CustomerController@index');
-            Route::post('/customers',            'CustomerController@post');
-            Route::get( '/customers/{customer}', 'CustomerController@get' )->middleware('can:interactWith,customer');
-            Route::put( '/customers/{customer}', 'CustomerController@put' )->middleware('can:interactWith,customer');
+            Route::put('',                 'CompanyController@update');
+            Route::get( '/customers',      'CustomerController@index');
+            Route::post('/customers',      'CustomerController@post');
+            Route::get( '/customers/{id}', 'CustomerController@get' )->middleware('can:interactWith,customer');
+            Route::put( '/customers/{id}', 'CustomerController@put' )->middleware('can:interactWith,customer');
 
-            Route::get( '/measurement-settings', 'MeasurementSettingController@index');
+            Route::get( '/measurement-settings',      'MeasurementSettingController@index');
         });
 });
