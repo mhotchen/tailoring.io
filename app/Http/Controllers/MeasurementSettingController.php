@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MeasurementSettingCreateRequest;
 use App\Http\Requests\MeasurementSettingUpdateRequest;
 use App\Http\Resources\MeasurementSettingResource;
 use App\Models\Company;
@@ -24,6 +25,25 @@ final class MeasurementSettingController extends Controller
     }
 
     /**
+     * @param MeasurementSettingCreateRequest $measurementSettingCreateRequest
+     * @param Company                         $company
+     * @return MeasurementSettingResource
+     * @throws \Illuminate\Database\Eloquent\MassAssignmentException
+     * @throws \UnexpectedValueException
+     */
+    public function create(
+        MeasurementSettingCreateRequest $measurementSettingCreateRequest,
+        Company $company
+    ): MeasurementSettingResource
+    {
+        $measurementSetting = new MeasurementSetting;
+        $measurementSetting->hydrateFromRequest($measurementSettingCreateRequest->validated(), Auth::user());
+        $company->measurementSettings()->save($measurementSetting);
+
+        return new MeasurementSettingResource($measurementSetting);
+    }
+
+    /**
      * @param MeasurementSettingUpdateRequest $request
      * @param Company                         $company
      * @param string                          $id
@@ -41,7 +61,7 @@ final class MeasurementSettingController extends Controller
         $measurementSetting = $company->measurementSettings()->findOrFail($id);
         $measurementSetting->fill($request->validated()['data']);
         $measurementSetting->updatedBy()->associate(Auth::user());
-        $measurementSetting->save();
+        $company->measurementSettings()->save($measurementSetting);
 
         return new MeasurementSettingResource($measurementSetting);
     }

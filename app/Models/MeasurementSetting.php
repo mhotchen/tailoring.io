@@ -73,12 +73,16 @@ final class MeasurementSetting extends Model
     }
 
     /**
-     * @param iterable|GarmentType[] $garmentTypes
+     * @param iterable|GarmentType[]|string[] $garmentTypes
      * @throws \InvalidArgumentException
      */
     public function setGarmentTypesAttribute(iterable $garmentTypes): void
     {
-        $this->attributes['garment_types'] = $this->toPostgresArray($garmentTypes);
+        $this->attributes['garment_types'] = $this->toPostgresArray(
+            (new Collection($garmentTypes))->map(function ($type): GarmentType {
+                return $type instanceof GarmentType ? $type : new GarmentType($type);
+            })
+        );
     }
 
     /**
@@ -119,5 +123,21 @@ final class MeasurementSetting extends Model
         $this->deletedBy()->associate($deletedBy);
         $this->deleted_at = Carbon::now();
         $this->save();
+    }
+
+    /**
+     * @param array $request
+     * @param User  $user
+     */
+    public function hydrateFromRequest(array $request, User $user)
+    {
+        $this->id = $request['data']['id'];
+        $this->createdBy()->associate($user);
+        $this->updatedBy()->associate($user);
+        $this->name = $request['data']['name'];
+        $this->type = $request['data']['type'];
+        $this->garment_types = $request['data']['garments'];
+        $this->min_value = $request['data']['min_value'];
+        $this->max_value = $request['data']['max_value'];
     }
 }
