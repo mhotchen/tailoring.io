@@ -13,7 +13,7 @@ final class DefaultMeasurementSetting
     private $type;
 
     /** @var GarmentType[] */
-    private $garmentTypes;
+    private $garments;
 
     /** @var int */
     private $minValue;
@@ -24,20 +24,20 @@ final class DefaultMeasurementSetting
     /**
      * @param string          $name
      * @param MeasurementType $type
-     * @param GarmentType[]   $garmentTypes
+     * @param GarmentType[]   $garments
      * @param int             $minValue
      * @param int             $maxValue
      */
     public function __construct(
         string $name,
         MeasurementType $type,
-        array $garmentTypes,
+        array $garments,
         int $minValue,
         int $maxValue
     ) {
         $this->name = $name;
         $this->type = $type;
-        $this->garmentTypes = $garmentTypes;
+        $this->garments = $garments;
         $this->minValue = $minValue;
         $this->maxValue = $maxValue;
     }
@@ -61,9 +61,9 @@ final class DefaultMeasurementSetting
     /**
      * @return GarmentType[]
      */
-    public function getGarmentTypes(): array
+    public function getGarments(): array
     {
-        return $this->garmentTypes;
+        return $this->garments;
     }
 
     /**

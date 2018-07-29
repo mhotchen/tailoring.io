@@ -40,7 +40,7 @@ class CreateMeasurementSettingsTable extends Migration
             $table->uuid('id');
             $table->text('name');
             $table->measurementType('type');
-            $table->garmentTypeArray('garment_types');
+            $table->garmentTypeArray('garments');
             $table->integer('min_value');
             $table->integer('max_value');
             $table->uuid('created_by');
@@ -84,9 +84,9 @@ class CreateMeasurementSettingsTable extends Migration
             'garment_type_count',
             sprintf(
                 '
-                ("type" = \'%s\' AND COALESCE(ARRAY_LENGTH("garment_types", 1), 0) >= 1)
+                ("type" = \'%s\' AND COALESCE(ARRAY_LENGTH("garments", 1), 0) >= 1)
                 OR
-                ("type" != \'%s\' AND COALESCE(ARRAY_LENGTH("garment_types", 1), 0) = 1)
+                ("type" != \'%s\' AND COALESCE(ARRAY_LENGTH("garments", 1), 0) = 1)
                 ',
                 MeasurementType::BODY(),
                 MeasurementType::BODY()

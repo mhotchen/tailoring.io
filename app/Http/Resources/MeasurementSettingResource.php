@@ -22,7 +22,7 @@ final class MeasurementSettingResource extends JsonResource
                 'id' => $this->id,
                 'name' => $this->name,
                 'type' => $this->type,
-                'garment_types' => $this->garment_types,
+                'garments' => $this->garments,
                 'min_value' => $this->min_value,
                 'max_value' => $this->max_value,
                 'created_at' => $this->created_at->toIso8601ZuluString(),

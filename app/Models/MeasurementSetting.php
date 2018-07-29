@@ -21,7 +21,7 @@ use Illuminate\Support\Collection;
  * @property string                                                                    $id
  * @property string                                                                    $name
  * @property MeasurementType                                                           $type
- * @property GarmentType[]|Collection                                                  $garment_types
+ * @property GarmentType[]|Collection                                                  $garments
  * @property int                                                                       $min_value
  * @property int                                                                       $max_value
  * @property \Carbon\Carbon|null                                                       $created_at
@@ -73,13 +73,13 @@ final class MeasurementSetting extends Model
     }
 
     /**
-     * @param iterable|GarmentType[]|string[] $garmentTypes
+     * @param iterable|GarmentType[]|string[] $garments
      * @throws \InvalidArgumentException
      */
-    public function setGarmentTypesAttribute(iterable $garmentTypes): void
+    public function setGarmentsAttribute(iterable $garments): void
     {
-        $this->attributes['garment_types'] = $this->toPostgresArray(
-            (new Collection($garmentTypes))->map(function ($type): GarmentType {
+        $this->attributes['garments'] = $this->toPostgresArray(
+            (new Collection($garments))->map(function ($type): GarmentType {
                 return $type instanceof GarmentType ? $type : new GarmentType($type);
             })
         );
@@ -89,11 +89,11 @@ final class MeasurementSetting extends Model
      * @return Collection|GarmentType[]
      * @throws \InvalidArgumentException
      */
-    public function getGarmentTypesAttribute(): Collection
+    public function getGarmentsAttribute(): Collection
     {
-        return (new Collection($this->fromPostgresArray($this->attributes['garment_types'])))
-            ->map(function (string $garmentType): GarmentType {
-                return new GarmentType($garmentType);
+        return (new Collection($this->fromPostgresArray($this->attributes['garments'])))
+            ->map(function (string $garment): GarmentType {
+                return new GarmentType($garment);
             });
     }
 
@@ -109,7 +109,7 @@ final class MeasurementSetting extends Model
         $this->updatedBy()->associate($user);
         $this->name = trans($default->getName());
         $this->type = $default->getType();
-        $this->garment_types = $default->getGarmentTypes();
+        $this->garments = $default->getGarments();
         $this->min_value = $default->getMinValue();
         $this->max_value = $default->getMaxValue();
     }
@@ -136,7 +136,7 @@ final class MeasurementSetting extends Model
         $this->updatedBy()->associate($user);
         $this->name = $request['data']['name'];
         $this->type = $request['data']['type'];
-        $this->garment_types = $request['data']['garments'];
+        $this->garments = $request['data']['garments'];
         $this->min_value = $request['data']['min_value'];
         $this->max_value = $request['data']['max_value'];
     }
