@@ -21,8 +21,8 @@ final class DefaultMeasurementSettings
                 'measurements.default.body.height',
                 MeasurementType::BODY(),
                 [GarmentType::JACKET(), GarmentType::WAISTCOAT(), GarmentType::TROUSERS(), GarmentType::SHIRT()],
-                 65 * self::CENTIMETER_TO_MICROMETER,
-                120 * self::CENTIMETER_TO_MICROMETER
+                120 * self::CENTIMETER_TO_MICROMETER,
+                275 * self::CENTIMETER_TO_MICROMETER
             ),
             new DefaultMeasurementSetting(
                 'measurements.default.body.neck',
