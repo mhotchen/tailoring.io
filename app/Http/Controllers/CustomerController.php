@@ -78,6 +78,7 @@ final class CustomerController extends Controller
     public function put(CustomerStoreRequest $customerStoreRequest, Company $company, string $id): CustomerResource
     {
         $request = $customerStoreRequest->validated();
+        /** @var Customer $customer */
         $customer = $company->customers()->findOrFail($id);
 
         // Ignore the ID field in the request, use the one from the loaded model instead.

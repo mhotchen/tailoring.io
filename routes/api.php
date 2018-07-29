@@ -16,9 +16,8 @@ Route::middleware(['auth:api'])->group(function () {
 
             Route::get( '/customers',      'CustomerController@index');
             Route::post('/customers',      'CustomerController@post');
-            // TODO drop the middleware and use $company->customers() association in the controller.
-            Route::get( '/customers/{id}', 'CustomerController@get' )->middleware('can:interactWith,customer');
-            Route::put( '/customers/{id}', 'CustomerController@put' )->middleware('can:interactWith,customer');
+            Route::get( '/customers/{id}', 'CustomerController@get');
+            Route::put( '/customers/{id}', 'CustomerController@put');
 
             Route::get(   '/measurement-settings',      'MeasurementSettingController@index');
             Route::post(  '/measurement-settings',      'MeasurementSettingController@create');
