@@ -20,7 +20,7 @@ final class MeasurementSettingController extends Controller
      */
     public function index(Company $company, Request $request): ResourceCollection
     {
-        // TODO partial index on deleted_at where NULL
+        // TODO partial index on company_id/deleted_at where NULL
         return MeasurementSettingResource::collection($company->measurementSettings()->whereNull('deleted_at')->get());
     }
 
@@ -29,7 +29,6 @@ final class MeasurementSettingController extends Controller
      * @param Company                         $company
      * @return MeasurementSettingResource
      * @throws \Illuminate\Database\Eloquent\MassAssignmentException
-     * @throws \UnexpectedValueException
      */
     public function create(
         MeasurementSettingCreateRequest $measurementSettingCreateRequest,

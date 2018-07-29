@@ -19,6 +19,7 @@ use Illuminate\Support\Collection;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[]               $users
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Customer[]           $customers
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\MeasurementSetting[] $measurementSettings
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SampleGarment[]      $sampleGarments
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Company whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Company whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Company whereName($value)
@@ -49,6 +50,11 @@ final class Company extends Model
     public function measurementSettings(): HasMany
     {
         return $this->hasMany(MeasurementSetting::class);
+    }
+
+    public function sampleGarments(): HasMany
+    {
+        return $this->hasMany(SampleGarment::class);
     }
 
     /**

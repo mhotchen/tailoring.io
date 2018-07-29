@@ -13,8 +13,10 @@ Route::middleware(['auth:api'])->group(function () {
         ->prefix('companies/{company}')
         ->group(function () {
             Route::put('',                 'CompanyController@update');
+
             Route::get( '/customers',      'CustomerController@index');
             Route::post('/customers',      'CustomerController@post');
+            // TODO drop the middleware and use $company->customers() association in the controller.
             Route::get( '/customers/{id}', 'CustomerController@get' )->middleware('can:interactWith,customer');
             Route::put( '/customers/{id}', 'CustomerController@put' )->middleware('can:interactWith,customer');
 
@@ -22,5 +24,10 @@ Route::middleware(['auth:api'])->group(function () {
             Route::post(  '/measurement-settings',      'MeasurementSettingController@create');
             Route::put(   '/measurement-settings/{id}', 'MeasurementSettingController@put');
             Route::delete('/measurement-settings/{id}', 'MeasurementSettingController@delete');
+
+            Route::get(   '/sample-garments',      'SampleGarmentController@index');
+            Route::post(  '/sample-garments',      'SampleGarmentController@create');
+            Route::put(   '/sample-garments/{id}', 'SampleGarmentController@put');
+            Route::delete('/sample-garments/{id}', 'SampleGarmentController@delete');
         });
 });
