@@ -27,13 +27,23 @@ use Illuminate\Support\Collection;
  * @property \Carbon\Carbon|null                                                       $created_at
  * @property \Carbon\Carbon|null                                                       $updated_at
  * @property \Carbon\Carbon|null                                                       $deleted_at
+ * @property string                                                                    $created_by
+ * @property string                                                                    $updated_by
+ * @property string                                                                    $deleted_by
  * @property-read \App\Models\User                                                     $createdBy
  * @property-read \App\Models\User                                                     $updatedBy
  * @property-read \App\Models\User                                                     $deletedBy
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereCompanyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereGarments($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereMinValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereMaxValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereUpdatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereDeletedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementSetting whereDeletedAt($value)
  * @mixin \Eloquent
