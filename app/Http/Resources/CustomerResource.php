@@ -26,6 +26,9 @@ class CustomerResource extends JsonResource
                 'created_at' => $this->created_at->toIso8601ZuluString(),
                 'updated_at' => $this->updated_at->toIso8601ZuluString(),
                 'notes' => $this->relationLoaded('notes') ? CustomerNoteResource::collection($this->notes) : [],
+                'measurement_profiles' => $this->relationLoaded('measurementProfiles')
+                    ? MeasurementProfileResource::collection($this->measurementProfiles)
+                    : [],
             ],
         ];
     }

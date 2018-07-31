@@ -35,11 +35,13 @@ final class CustomerController extends Controller
      */
     public function get(Company $company, string $id): CustomerResource
     {
-        $customer = $company->customers()->findOrFail($id);
-
-        // This line ensures the notes are added to the returned JSON since they're only added if they're loaded.
-        // We don't load notes on the home page to improve performance.
-        $customer->loadMissing('notes');
+        $customer = $company
+            ->customers()
+            ->with([
+                'notes',
+                'measurementProfiles.commits.measurements.setting',
+            ])
+            ->findOrFail($id);
 
         return new CustomerResource($customer);
     }
