@@ -84,11 +84,10 @@ class CreateMeasurementSettingsTable extends Migration
             'garment_type_count',
             sprintf(
                 '
-                ("type" = \'%s\' AND COALESCE(ARRAY_LENGTH("garments", 1), 0) >= 1)
+                ("type" = \'%1$s\' AND COALESCE(ARRAY_LENGTH("garments", 1), 0) >= 1)
                 OR
-                ("type" != \'%s\' AND COALESCE(ARRAY_LENGTH("garments", 1), 0) = 1)
+                ("type" != \'%1$s\' AND COALESCE(ARRAY_LENGTH("garments", 1), 0) = 1)
                 ',
-                MeasurementType::BODY(),
                 MeasurementType::BODY()
             )
         );
