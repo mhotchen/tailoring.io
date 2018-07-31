@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $comment
  * @property string $created_by
  * @property \Carbon\Carbon $created_at
- * @property-read \App\Models\MeasurementSetting $measurementSetting
+ * @property-read \App\Models\MeasurementSetting $setting
  * @property-read \App\Models\User $createdBy
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementProfileMeasurement whereComment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementProfileMeasurement whereCompanyId($value)
@@ -40,7 +40,7 @@ final class MeasurementProfileMeasurement extends Model
     /** @var array */
     protected $casts = ['id' => 'string'];
 
-    public function measurementSetting(): BelongsTo
+    public function setting(): BelongsTo
     {
         return $this->belongsTo(MeasurementSetting::class);
     }
