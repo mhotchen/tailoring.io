@@ -5,6 +5,7 @@ use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Resources\CustomerResource;
 use App\Models\Company;
 use App\Models\Customer;
+use App\Models\MeasurementProfile;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -58,10 +59,13 @@ final class CustomerController extends Controller
         $notesData = collect($request['data']['notes'])->filter(function(array $data) {
             return isset($data['data']['note']) && $data['data']['note'] !== '';
         });
+        $bodyMeasurementProfile = new MeasurementProfile;
+        $bodyMeasurementProfile->fillForBodyProfile($company, Auth::user());
 
-        DB::transaction(function () use ($customer, $notesData, $company) {
+        DB::transaction(function () use ($customer, $notesData, $bodyMeasurementProfile, $company) {
             $customer->save();
             $customer->createNewNotes($notesData, Auth::user(), $company);
+            $customer->measurementProfiles()->save($bodyMeasurementProfile);
             $customer->load('notes');
         });
 

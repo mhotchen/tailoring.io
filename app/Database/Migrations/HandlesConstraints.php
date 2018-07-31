@@ -7,6 +7,24 @@ trait HandlesConstraints
 {
     /**
      * @param string $table
+     * @param array  $columns
+     * @param string $name
+     * @param string $checkCommand
+     * @throws \Illuminate\Database\QueryException
+     */
+    public function partialUnique(string $table, array $columns, string $name, string $checkCommand): void
+    {
+        DB::unprepared(sprintf(
+            'CREATE UNIQUE INDEX %s ON %s (%s) WHERE %s',
+            $name,
+            $table,
+            implode(', ', $columns),
+            $checkCommand
+        ));
+    }
+
+    /**
+     * @param string $table
      * @param string $name
      * @param string $checkCommand
      * @throws \Illuminate\Database\QueryException

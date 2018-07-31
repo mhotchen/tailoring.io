@@ -10,19 +10,20 @@ use Illuminate\Support\Collection;
 /**
  * App\Models\Customer
  *
- * @property string                                                                   $id
- * @property string                                                                   $name
- * @property string                                                                   $email
- * @property string                                                                   $telephone
- * @property string                                                                   $company_id
- * @property string                                                                   $created_by
- * @property string                                                                   $updated_by
- * @property \Carbon\Carbon|null                                                      $created_at
- * @property \Carbon\Carbon|null                                                      $updated_at
- * @property-read \App\Models\Company                                                 $company
- * @property-read \App\Models\User                                                    $createdBy
- * @property-read \App\Models\User                                                    $updatedBy
+ * @property string $id
+ * @property string $name
+ * @property string $email
+ * @property string $telephone
+ * @property string $company_id
+ * @property string $created_by
+ * @property string $updated_by
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\Models\Company $company
+ * @property-read \App\Models\User $createdBy
+ * @property-read \App\Models\User $updatedBy
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CustomerNote[] $notes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\MeasurementProfile[] $measurementProfiles
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Customer whereCompanyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Customer whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Customer whereCreatedBy($value)
@@ -45,6 +46,11 @@ final class Customer extends Model
     public function notes(): HasMany
     {
         return $this->hasMany(CustomerNote::class);
+    }
+
+    public function measurementProfiles(): HasMany
+    {
+        return $this->hasMany(MeasurementProfile::class);
     }
 
     public function company(): BelongsTo

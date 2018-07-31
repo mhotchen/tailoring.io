@@ -5,6 +5,7 @@ use App\Measurement\Settings\DefaultMeasurementSettings;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\CustomerNote;
+use App\Models\MeasurementProfile;
 use App\Models\MeasurementSetting;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -56,6 +57,9 @@ class AccountsSeeder extends Seeder
                     $customer->updatedBy()->associate($user);
                     $customer->company()->associate($company);
                     $customer->save();
+                    $bodyMeasurementProfile = new MeasurementProfile;
+                    $bodyMeasurementProfile->fillForBodyProfile($company, $user);
+                    $customer->measurementProfiles()->save($bodyMeasurementProfile);
                     factory(CustomerNote::class, random_int(0, 10))->make()->each(
                         function (CustomerNote $note) use ($customer, $user, $company): void {
                             $note->createdBy()->associate($user);

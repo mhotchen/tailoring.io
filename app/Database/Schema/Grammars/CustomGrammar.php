@@ -20,4 +20,9 @@ final class CustomGrammar extends PostgresGrammar
     {
         return 'measurement_type';
     }
+
+    public function typeMeasurementProfileType(Fluent $column): string
+    {
+        return 'measurement_profile_type';
+    }
 }

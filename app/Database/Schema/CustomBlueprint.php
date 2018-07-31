@@ -20,4 +20,9 @@ final class CustomBlueprint extends Blueprint
     {
         return $this->addColumn('measurementType', $column);
     }
+
+    public function measurementProfileType(string $column): Fluent
+    {
+        return $this->addColumn('measurementProfileType', $column);
+    }
 }
