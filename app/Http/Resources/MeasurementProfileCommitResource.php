@@ -2,7 +2,6 @@
 namespace App\Http\Resources;
 
 use App\Models\MeasurementProfileCommit;
-use App\Models\MeasurementProfileMeasurement;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

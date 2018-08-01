@@ -13,7 +13,7 @@ final class UnitOfMeasurementSetting extends Enum
     protected const CENTIMETERS = 'CENTIMETERS';
 
     private const ROUND_MEASUREMENT_TO_NEAREST = [
-        self::INCHES      => 12700, // Half an inch in micrometers.
+        self::INCHES      => 25400, // 1 inch in micrometers.
         self::CENTIMETERS => 10000, // 1 CM in micrometers.
     ];
 
