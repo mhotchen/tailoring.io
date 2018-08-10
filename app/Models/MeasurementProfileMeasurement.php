@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -37,16 +38,37 @@ final class MeasurementProfileMeasurement extends Model
      */
     public const UPDATED_AT = null;
 
+    use Compoships;
+
     /** @var array */
     protected $casts = ['id' => 'string'];
 
     public function setting(): BelongsTo
     {
-        return $this->belongsTo(MeasurementSetting::class);
+        return $this->belongsTo(
+            MeasurementSetting::class,
+            ['company_id', 'measurement_setting_id'],
+            ['company_id', 'id']
+        );
     }
 
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function fillFromRequest(array $request, Company $company, User $createdBy): void
+    {
+        $this->id = $request['data']['id'];
+        $this->measurement_setting_id = $request['data']['setting_id'];
+        $this->value = $request['data']['value'] ?? null;
+        $this->comment = $request['data']['comment'] ?? null;
+        $this->createdBy()->associate($createdBy);
+        $this->company()->associate($company);
     }
 }

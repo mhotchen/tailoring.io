@@ -1,9 +1,10 @@
 <?php
 namespace App\Models;
 
+use Awobaz\Compoships\Compoships;
+use Awobaz\Compoships\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\MeasurementProfileCommit
@@ -41,21 +42,56 @@ final class MeasurementProfileCommit extends Model
      */
     public const UPDATED_AT = null;
 
+    use Compoships;
+
     /** @var array */
     protected $casts = ['id' => 'string'];
 
     public function sampleGarment(): BelongsTo
     {
-        return $this->belongsTo(SampleGarment::class);
+        return $this->belongsTo(
+            SampleGarment::class,
+            ['company_id', 'sample_garment_id'],
+            ['company_id', 'id']
+        );
     }
 
     public function measurements(): HasMany
     {
-        return $this->hasMany(MeasurementProfileMeasurement::class);
+        return $this->hasMany(
+            MeasurementProfileMeasurement::class,
+            ['company_id', 'measurement_profile_commit_id'],
+            ['company_id', 'id']
+        );
     }
 
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function fillFromRequest(array $request, MeasurementProfile $profile, Company $company, User $createdBy): void
+    {
+        $this->id = $request['data']['id'];
+        $this->name = $request['data']['name'];
+        $this->message = $request['data']['message'] ?? null;
+        $this->revision = \DB::raw("
+            COALESCE(
+                (
+                    SELECT MAX(revision)
+                    FROM measurement_profile_commits
+                    WHERE company_id = '$company->id'
+                    AND measurement_profile_id = '$profile->id'
+                ),
+                0
+            ) + 1
+        ");
+        $this->company()->associate($company);
+        $this->createdBy()->associate($createdBy);
     }
 }

@@ -19,6 +19,11 @@ Route::middleware(['auth:api'])->group(function () {
             Route::get( '/customers/{id}', 'CustomerController@get');
             Route::put( '/customers/{id}', 'CustomerController@put');
 
+            Route::prefix('/customers/{customerId}/measurement-profiles')
+                ->group(function () {
+                    Route::post('{profileId}/commits', 'MeasurementProfileController@commit');
+                });
+
             Route::get(   '/measurement-settings',      'MeasurementSettingController@index');
             Route::post(  '/measurement-settings',      'MeasurementSettingController@create');
             Route::put(   '/measurement-settings/{id}', 'MeasurementSettingController@put');

@@ -2,12 +2,14 @@
 namespace App\Models;
 
 use App\Models\Scopes\OrderByScope;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\CustomerNote
  *
+ * @property string                   $company_id
  * @property string                   $id
  * @property string                   $note
  * @property string                   $customer_id
@@ -26,11 +28,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CustomerNote whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CustomerNote whereUpdatedBy($value)
  * @mixin \Eloquent
- * @property string $company_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\CustomerNote whereCompanyId($value)
  */
 final class CustomerNote extends Model
 {
+    use Compoships;
+
     /** @var array */
     protected $fillable = ['id', 'note'];
 

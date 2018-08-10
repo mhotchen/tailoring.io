@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Garment\GarmentType;
+use Awobaz\Compoships\Compoships;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,11 +34,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 final class SampleGarment extends Model
 {
+    use Compoships;
+
     /** @var array */
     protected $casts = ['id' => 'string'];
 
     /** @var array */
     protected $fillable = ['name'];
+
+    /** @var array */
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     public function createdBy(): BelongsTo
     {

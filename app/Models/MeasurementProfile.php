@@ -3,10 +3,12 @@ namespace App\Models;
 
 use App\Garment\GarmentType;
 use App\Measurement\Profile\MeasurementProfileType;
+use Awobaz\Compoships\Compoships;
+use Awobaz\Compoships\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\MeasurementProfile
@@ -24,6 +26,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \App\Models\Company $company
  * @property-read \App\Models\User $createdBy
  * @property-read \App\Models\User $deletedBy
+ * @property-read Collection|MeasurementProfileMeasurement[] $current_measurements
+ * @property-read string|null $current_name
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementProfile whereCompanyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementProfile whereCustomerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementProfile whereCreatedAt($value)
@@ -45,14 +49,21 @@ final class MeasurementProfile extends Model
      */
     public const UPDATED_AT = null;
 
-    use GeneratesUniqueUuid;
+    use GeneratesUniqueUuid, Compoships;
 
     /** @var array */
     protected $casts = ['id' => 'string'];
 
+    /** @var array */
+    protected $dates = ['created_at', 'deleted_at'];
+
     public function commits(): HasMany
     {
-        return $this->hasMany(MeasurementProfileCommit::class);
+        return $this->hasMany(
+            MeasurementProfileCommit::class,
+            ['company_id', 'measurement_profile_id'],
+            ['company_id', 'id']
+        );
     }
 
     public function company(): BelongsTo
@@ -68,6 +79,32 @@ final class MeasurementProfile extends Model
     public function deletedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'deleted_by');
+    }
+
+    /**
+     * Virtual attribute that returns the latest measurements for this profile, with the array index being the
+     * measurement_setting_id for quicker lookups.
+     *
+     * @return Collection|MeasurementProfileMeasurement[]
+     */
+    public function getCurrentMeasurementsAttribute(): Collection
+    {
+        // 'keyBy' replaces items in collection if same key exists, so if a measurement exists in multiple commits
+        // for the same setting then the newer one is used (assuming correct ordering, which is true by default).
+        return $this->commits
+            ->flatMap(function (MeasurementProfileCommit $commit): iterable { return $commit->measurements; })
+            ->keyBy('measurement_setting_id')
+        ;
+    }
+
+    /**
+     * Virtual attribute that returns the name as it is set in the latest commit.
+     *
+     * @return null|string
+     */
+    public function getCurrentNameAttribute(): ?string
+    {
+        return $this->commits->last()->name;
     }
 
     /**
@@ -100,5 +137,19 @@ final class MeasurementProfile extends Model
         $this->garment = null;
         $this->createdBy()->associate($createdBy);
         $this->company()->associate($company);
+    }
+
+    public function filterMeasurement(MeasurementProfileMeasurement $measurement): bool
+    {
+        /** @var MeasurementProfileMeasurement|null $current */
+        $current = $this->current_measurements->get($measurement->measurement_setting_id);
+
+        // New measurement: if any of the values are set then don't filter.
+        if (!$current) {
+            return $measurement->value !== null || $measurement->comment !== null;
+        }
+
+        // Existing measurement: if any of the values have changed then don't filter.
+        return $current->value !== $measurement->value || $current->comment !== $measurement->comment;
     }
 }

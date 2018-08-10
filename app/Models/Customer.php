@@ -2,9 +2,10 @@
 namespace App\Models;
 
 use App\Models\Scopes\OrderByScope;
+use Awobaz\Compoships\Compoships;
+use Awobaz\Compoships\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
 /**
@@ -37,6 +38,8 @@ use Illuminate\Support\Collection;
  */
 final class Customer extends Model
 {
+    use Compoships;
+
     /** @var array */
     protected $fillable = ['id', 'name', 'email', 'telephone'];
 
@@ -45,12 +48,20 @@ final class Customer extends Model
 
     public function notes(): HasMany
     {
-        return $this->hasMany(CustomerNote::class);
+        return $this->hasMany(
+            CustomerNote::class,
+            ['company_id', 'customer_id'],
+            ['company_id', 'id']
+        );
     }
 
     public function measurementProfiles(): HasMany
     {
-        return $this->hasMany(MeasurementProfile::class);
+        return $this->hasMany(
+            MeasurementProfile::class,
+            ['company_id', 'customer_id'],
+            ['company_id', 'id']
+        );
     }
 
     public function company(): BelongsTo

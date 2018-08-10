@@ -85,7 +85,7 @@ class CreateMeasurementProfileTables extends Migration
             $table->integer('revision');
             $table->uuid('sample_garment_id')->nullable();
             $table->text('name');
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->uuid('created_by');
             $table->timestamp('created_at');
 
@@ -118,7 +118,7 @@ class CreateMeasurementProfileTables extends Migration
             $table->uuid('measurement_profile_commit_id');
             $table->uuid('measurement_setting_id');
             $table->integer('value')->nullable();
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->uuid('created_by');
             $table->timestamp('created_at');
 

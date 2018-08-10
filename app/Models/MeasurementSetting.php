@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Garment\GarmentType;
 use App\Measurement\MeasurementType;
 use App\Measurement\Settings\DefaultMeasurementSetting;
+use Awobaz\Compoships\Compoships;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -50,13 +51,16 @@ use Illuminate\Support\Collection;
  */
 final class MeasurementSetting extends Model
 {
-    use HandlesPostgresArrays, GeneratesUniqueUuid;
+    use HandlesPostgresArrays, GeneratesUniqueUuid, Compoships;
 
     /** @var array */
     protected $casts = ['id' => 'string'];
 
     /** @var array */
     protected $fillable = ['name'];
+
+    /** @var array */
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     public function createdBy(): BelongsTo
     {
@@ -101,10 +105,7 @@ final class MeasurementSetting extends Model
      */
     public function getGarmentsAttribute(): Collection
     {
-        return (new Collection($this->fromPostgresArray($this->attributes['garments'])))
-            ->map(function (string $garment): GarmentType {
-                return new GarmentType($garment);
-            });
+        return (new Collection($this->fromPostgresArray($this->attributes['garments'])))->mapInto(GarmentType::class);
     }
 
     /**
