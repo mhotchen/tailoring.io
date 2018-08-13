@@ -40,6 +40,7 @@ final class CustomerController extends Controller
             ->with([
                 'notes',
                 'measurementProfiles.commits.measurements.setting',
+                'measurementProfiles.commits.sampleGarment',
             ])
             ->findOrFail($id);
 

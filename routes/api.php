@@ -21,6 +21,7 @@ Route::middleware(['auth:api'])->group(function () {
 
             Route::prefix('/customers/{customerId}/measurement-profiles')
                 ->group(function () {
+                    Route::post('',                    'MeasurementProfileController@post');
                     Route::post('{profileId}/commits', 'MeasurementProfileController@commit');
                 });
 

@@ -28,6 +28,7 @@ use Illuminate\Support\Collection;
  * @property-read \App\Models\User $deletedBy
  * @property-read Collection|MeasurementProfileMeasurement[] $current_measurements
  * @property-read string|null $current_name
+ * @property-read SampleGarment|null $current_sample_garment
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementProfile whereCompanyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementProfile whereCustomerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MeasurementProfile whereCreatedAt($value)
@@ -104,7 +105,17 @@ final class MeasurementProfile extends Model
      */
     public function getCurrentNameAttribute(): ?string
     {
-        return $this->commits->last()->name;
+        return $this->commits->isNotEmpty() ? $this->commits->last()->name : null;
+    }
+
+    /**
+     * Virtual attribute that returns the sample garment as it is set in the latest commit.
+     *
+     * @return SampleGarment|null
+     */
+    public function getCurrentSampleGarmentAttribute(): ?SampleGarment
+    {
+        return $this->commits->isNotEmpty() ? $this->commits->last()->sampleGarment : null;
     }
 
     /**
@@ -151,5 +162,14 @@ final class MeasurementProfile extends Model
 
         // Existing measurement: if any of the values have changed then don't filter.
         return $current->value !== $measurement->value || $current->comment !== $measurement->comment;
+    }
+
+    public function fillFromRequest(array $request, Company $company, User $user): void
+    {
+        $this->id = $request['data']['id'];
+        $this->type = $request['data']['type'];
+        $this->garment = $request['data']['garment'] ?? null;
+        $this->company()->associate($company);
+        $this->createdBy()->associate($user);
     }
 }

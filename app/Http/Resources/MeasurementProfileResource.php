@@ -25,6 +25,9 @@ class MeasurementProfileResource extends JsonResource
                 'created_at' => $this->created_at->toIso8601ZuluString(),
                 'current_measurements' => MeasurementProfileMeasurementResource::collection($this->current_measurements),
                 'current_name' => $this->current_name,
+                'current_sample_garment' => $this->current_sample_garment
+                    ? new SampleGarmentResource($this->current_sample_garment)
+                    : null,
                 'commits' => $this->relationLoaded('commits')
                     ? MeasurementProfileCommitResource::collection($this->commits)
                     : [],

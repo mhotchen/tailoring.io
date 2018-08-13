@@ -4,7 +4,8 @@ namespace App\Models;
 use Awobaz\Compoships\Compoships;
 use Awobaz\Compoships\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Awobaz\Compoships\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\MeasurementProfileCommit
@@ -75,11 +76,42 @@ final class MeasurementProfileCommit extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function fillFromRequest(array $request, MeasurementProfile $profile, Company $company, User $createdBy): void
+    /**
+     * Checks if the commit/measurements have actually changed anything within the profile.
+     *
+     * @param MeasurementProfile $profile
+     * @param Collection         $measurements
+     * @return bool
+     */
+    public function hasNoChanges(MeasurementProfile $profile, Collection $measurements): bool
+    {
+        return
+            $profile->current_name === $this->name &&
+            $measurements->isEmpty() &&
+            $this->sampleGarment->is($profile->current_sample_garment)
+        ;
+    }
+
+    public function fillFromRequest(
+        array $request,
+        MeasurementProfile $profile,
+        ?SampleGarment $sampleGarment,
+        Company $company,
+        User $createdBy
+    ): void
     {
         $this->id = $request['data']['id'];
         $this->name = $request['data']['name'];
         $this->message = $request['data']['message'] ?? null;
+        // Thanks lack of composite key support! I really appreciate it and the terrible running of Laravel from
+        // Taylor wrt to closing any tickets suggesting this feature because he doesn't like using the full
+        // capability of databases...
+        // Despite what the cargo cult says using composite keys isn't an anti-pattern and can be extremely effective,
+        // such as in this situation wherein it makes it impossible to mess with other application tenants by
+        // screwing with data sent to the API whilst allowing offline UID generation.
+        if ($sampleGarment) {
+            $this->sample_garment_id = $sampleGarment->id;
+        }
         $this->revision = \DB::raw("
             COALESCE(
                 (
